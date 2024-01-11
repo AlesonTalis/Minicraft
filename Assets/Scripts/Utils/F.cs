@@ -63,11 +63,17 @@ namespace Assets.Scripts.Utils
             }
         }
 
-        public static void Loop<T>(this T[,,] array, Action<int, int, int, int> loopAction, string name = null)
+        public static void Loop<T>(this T[,,] array, Action<Loop> loopAction, string name = null, LoopSettings? settings = null)
         {
-            int X = array.GetLength(0);
-            int Y = array.GetLength(1);
-            int Z = array.GetLength(2);
+            settings ??= new LoopSettings()
+            {
+                ignoreBorders = false
+            };
+
+            //int ignoreBorders = (settings.Value.ignoreBorders ? 1 : 0);
+            int X = array.GetLength(0);// - ignoreBorders;
+            int Y = array.GetLength(1);// - ignoreBorders;
+            int Z = array.GetLength(2);// - ignoreBorders;
 
             DateTime inicio = DateTime.Now;
 
@@ -77,7 +83,21 @@ namespace Assets.Scripts.Utils
                 {
                     for (int z = 0; z < Z; z++, i++)
                     {
-                        loopAction(i, x, y, z);
+                        bool center = (x > 0 && y > 0 && z > 0) &&
+                            (x < X - 1 && y < Y - 1 && z < Z - 1);
+
+                        if (settings.Value.ignoreBorders && center == false) continue;
+                        
+                        loopAction(new Loop
+                        {
+                            x = x,
+                            y = y,
+                            z = z,
+
+                            i = i,
+
+                            border = !center,
+                        });
                     }
                 }
             }
@@ -145,5 +165,21 @@ namespace Assets.Scripts.Utils
         }
 
         public static int CalcIndex(int SIZE, int x, int y, int z) => y * z * SIZE + x;
+    }
+
+    public struct Loop
+    {
+        public int x;
+        public int y;
+        public int z;
+
+        public int i;
+
+        public bool border;
+    }
+
+    public struct LoopSettings
+    {
+        public bool ignoreBorders;
     }
 }

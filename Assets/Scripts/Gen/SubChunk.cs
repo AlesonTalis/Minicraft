@@ -29,15 +29,15 @@ namespace Assets.Scripts.Gen
             int size = CHUNK_SIZE + 1;
             var chunkArray = new ushort[size, size, size];
 
-            chunkArray.Loop((i, x, y, z) =>
+            chunkArray.Loop((l) =>
             {
-                if ((x > 0 && y > 0 && z > 0) && (x < size - 1 && y < size - 1 && z < size - 1))
+                if (l.border)
                 {
-                    chunkArray[x,y,z] = blockId;
+                    chunkArray[l.x, l.y, l.z] = blockId;
                 }
                 else
                 {
-                    chunkArray[x,y,z] = (ushort)(blockId + 128);
+                    chunkArray[l.x, l.y, l.z] = blockId;//(ushort)(blockId + 128);
                 }
             }, "GENERATE SUBCHUNK");
 
@@ -51,10 +51,11 @@ namespace Assets.Scripts.Gen
 
         public static ushort[,,] StripeChunk(ushort[,,] array)
         {
-            array.Loop((i, x, y, z) => { 
-                if (y % 2 == 0)
+            array.Loop((l) => 
+            { 
+                if (l.y % 2 == 0)
                 {
-                    array[x,y,z] = 129;
+                    array[l.x,l.y,l.z] = 129;
                 }
             }, "Stripes");
 
@@ -66,19 +67,19 @@ namespace Assets.Scripts.Gen
         {
             var subChunkData = new SubChunkData();
 
-            blockArray.Loop((i, x, y, z) =>
+            blockArray.Loop((l) =>
             {
-                var blockid = blockArray[x,y,z];
+                var blockid = blockArray[l.x,l.y,l.z];
 
-                var vizinhos = blockArray.GetNeighbors(x, y, z);
+                var vizinhos = blockArray.GetNeighbors(l.x, l.y, l.z);
 
                 if ((blockid & 128) == 0)
                 {
                     var cube = Cube.GenerateCube(vizinhos);
 
-                    subChunkData = subChunkData.Add(cube, x - 1, y - 1, z - 1);// pode ser vazio
+                    subChunkData = subChunkData.Add(cube, l.x - 1, l.y - 1, l.z - 1);// pode ser vazio
                 }
-            }, "ConvertToVerticeData");
+            }, "ConvertToVerticeData", new LoopSettings { ignoreBorders = true });
 
             return subChunkData;
         }
