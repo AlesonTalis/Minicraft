@@ -8,6 +8,8 @@ namespace Assets.Scripts.Model
 {
     public class ChunkData : SubChunkData 
     {
+        public SubChunkData[] subChunks;
+
         public int chunkId { get; set; }
 
         public string chunkUID { get; set; }

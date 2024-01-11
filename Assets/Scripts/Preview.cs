@@ -1,5 +1,6 @@
 ﻿using Assets.Scripts.Enums;
 using Assets.Scripts.Gen;
+using Assets.Scripts.Noise;
 using System.Collections;
 using UnityEngine;
 
@@ -48,8 +49,9 @@ namespace Assets.Scripts
 
         void GenerateChunk()
         {
-            var chunkBlockArray = Chunk.SetFilledChunk(1);
-            var chunk = Chunk.GetChunkData(chunkBlockArray);
+            var heightMap = HeightmapNoise.GenerateHeightMap();
+            var chunk = Chunk.SetChunkDataHeightMap(heightMap);
+            chunk = Chunk.GetChunkData(chunk);
             var mesh = Chunk.GetChunkMesh(chunk);
 
             meshFilter.sharedMesh = mesh;

@@ -63,6 +63,14 @@ namespace Assets.Scripts.Utils
             }
         }
 
+        /// <summary>
+        /// LOOP 3D
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="array"></param>
+        /// <param name="loopAction"></param>
+        /// <param name="name"></param>
+        /// <param name="settings"></param>
         public static void Loop<T>(this T[,,] array, Func<Loop,LoopResult?> loopAction, string name = null, LoopSettings? settings = null)
         {
             settings ??= new LoopSettings()
@@ -105,6 +113,64 @@ namespace Assets.Scripts.Utils
                             
                             break;
                         }
+                    }
+                }
+            }
+
+            var intervalo = TimeSpan.FromTicks(DateTime.Now.Ticks - inicio.Ticks).TotalMilliseconds;
+
+            if (name is not null)
+            {
+                Debug.Log($"3D_LOOP: \"{name}\" - {intervalo}ms");
+            }
+        }
+
+
+        /// <summary>
+        /// LOOP 2D
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="array"></param>
+        /// <param name="loopAction"></param>
+        /// <param name="name"></param>
+        /// <param name="settings"></param>
+        public static void Loop<T>(this T[,] array, Func<Loop, LoopResult?> loopAction, string name = null, LoopSettings? settings = null)
+        {
+            settings ??= new LoopSettings()
+            {
+                ignoreBorders = false
+            };
+
+            //int ignoreBorders = (settings.Value.ignoreBorders ? 1 : 0);
+            int X = array.GetLength(0);// - ignoreBorders;
+            int Y = array.GetLength(1);// - ignoreBorders;
+
+            DateTime inicio = DateTime.Now;
+
+            for (int x = 0, i = 0; x < X; x++)
+            {
+                for (int y = 0; y < Y; y++)
+                {
+                    bool center = (x > 0 && y > 0) &&
+                        (x < X - 1 && y < Y - 1);
+
+                    if (settings.Value.ignoreBorders && center == false) continue;
+
+                    var result = loopAction(new Loop
+                    {
+                        x = x,
+                        y = y,
+
+                        i = i,
+
+                        border = !center,
+                    });
+
+                    if (result is not null && result.Value.callBreak)
+                    {
+                        x = y = int.MaxValue;
+
+                        break;
                     }
                 }
             }

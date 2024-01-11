@@ -26,7 +26,7 @@ namespace Assets.Scripts.Gen
         /// <returns></returns>
         public static SubChunkData SetFilledSubChunk(ushort blockId, bool stripes = false)
         {
-            int size = CHUNK_SIZE + 1;
+            int size = CHUNK_SIZE + 2;
             var chunkArray = new ushort[size, size, size];
 
             chunkArray.Loop((l) =>
