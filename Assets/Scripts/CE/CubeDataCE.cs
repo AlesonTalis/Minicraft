@@ -64,7 +64,7 @@ namespace Assets.Scripts.CE
 
             for (int i = 0; i < face.VerticesList.Count; i++)
             {
-                cube.VerticesList.Add(face.VerticesList[i]);
+                cube.VerticesList.Add(face.VerticesList[i] + offset);
             }
 
             return cube;

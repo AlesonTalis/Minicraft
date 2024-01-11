@@ -10,7 +10,7 @@ namespace Assets.Scripts.Gen
 {
     public static class SubChunk
     {
-        const int CHUNK_SIZE = 16;
+        public const int CHUNK_SIZE = 16;
 
         /** 
          * 8bits

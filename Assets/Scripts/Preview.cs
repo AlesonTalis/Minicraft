@@ -20,6 +20,7 @@ namespace Assets.Scripts
             {
                 case GenType.Cube: GenerateCube(); break;
                 case GenType.SubChunk: GenerateSubChunk(); break;
+                case GenType.Chunk: GenerateChunk(); break;
             }
         }
 
@@ -43,6 +44,18 @@ namespace Assets.Scripts
 
             //Debug.Log(string.Join(", ", subchunk.TrianglesList));
             //Debug.Log(string.Join(", ", subchunk.VerticesList));
+        }
+
+        void GenerateChunk()
+        {
+            var chunkBlockArray = Chunk.SetFilledChunk(1, true);
+            var chunk = Chunk.GetChunkData(chunkBlockArray);
+            var mesh = Chunk.GetChunkMesh(chunk);
+
+            meshFilter.sharedMesh = mesh;
+
+            //Debug.Log(string.Join(", ", chunk.TrianglesList));
+            //Debug.Log(string.Join(", ", chunk.VerticesList));
         }
     }
 }
