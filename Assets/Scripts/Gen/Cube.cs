@@ -1,5 +1,7 @@
 ﻿
 using UnityEngine;
+using Assets.Scripts.CE;
+using Assets.Scripts.Model;
 
 namespace Assets.Scripts.Gen
 {
@@ -64,19 +66,6 @@ namespace Assets.Scripts.Gen
         {
             Triangles = new[]
             {
-                0, 3, 2,
-                0, 1, 3
-            },
-            Vertices = new[]
-            {
-                new Vector3(0, 1, 0), new Vector3(1, 1, 0),
-                new Vector3(0, 0, 0), new Vector3(1, 0, 0),
-            },
-        };
-        static readonly CubeFaceData CUBE_FACE_BACK = new()
-        {
-            Triangles = new[]
-            {
                 0, 2, 3,
                 0, 3, 1
             },
@@ -84,6 +73,19 @@ namespace Assets.Scripts.Gen
             {
                 new Vector3(0, 1, 1), new Vector3(1, 1, 1),
                 new Vector3(0, 0, 1), new Vector3(1, 0, 1),
+            },
+        };
+        static readonly CubeFaceData CUBE_FACE_BACK = new()
+        {
+            Triangles = new[]
+            {
+                0, 3, 2,
+                0, 1, 3
+            },
+            Vertices = new[]
+            {
+                new Vector3(0, 1, 0), new Vector3(1, 1, 0),
+                new Vector3(0, 0, 0), new Vector3(1, 0, 0),
             },
         };
 
@@ -97,7 +99,7 @@ namespace Assets.Scripts.Gen
         /// ^1 TOP, ^2 BOTTOM, ^3 RIGHT, ^4 LEFT, ^5 FORWARD, ^6 BACK
         public static CubeData GenerateCube(int faces = 63)
         {
-            var cube = new CubeData().Init();
+            var cube = new CubeData();
 
             if ((faces & 1) != 0) cube = cube.Add(CUBE_FACE_TOP);
             if ((faces & 2) != 0) cube = cube.Add(CUBE_FACE_BOTTOM);
@@ -123,67 +125,5 @@ namespace Assets.Scripts.Gen
             return mesh;
         }
 
-
-        #region Private
-
-        private static CubeData Init(this CubeData cube)
-        {
-            cube = new CubeData
-            {
-                Triangles = new int[0],
-                Vertices = new Vector3[0],
-                Uvs = new Vector2[0]
-            };
-
-            return cube;
-        }
-
-        private static CubeData Add(this CubeData cube, CubeFaceData face)
-        {
-            var triangles = new int[cube.Triangles.Length + face.Triangles.Length];
-            var vertices = new Vector3[cube.Vertices.Length + face.Vertices.Length];
-            //var uvs = new Vector2[cube.Uvs.Length + face.Uvs.Length];
-
-            // triangles
-            for (int i = 0; i < cube.Triangles.Length; i++)
-            {
-                triangles[i] = cube.Triangles[i];
-            }
-            for (int i = cube.Triangles.Length; i < face.Triangles.Length + cube.Triangles.Length; i++)
-            {
-                triangles[i] = face.Triangles[i - cube.Triangles.Length] + cube.Vertices.Length;
-            }
-
-            // vertices
-            for (int v = 0; v < cube.Vertices.Length; v++)
-            {
-                vertices[v] = cube.Vertices[v];
-            }
-            for (int v = cube.Vertices.Length; v < face.Vertices.Length + cube.Vertices.Length; v++)
-            {
-                vertices[v] = face.Vertices[v - cube.Vertices.Length];
-            }
-
-            cube.Triangles = triangles;
-            cube.Vertices = vertices;
-
-            return cube;
-        }
-
-        #endregion
-    }
-
-    public struct CubeData
-    {
-        public int[] Triangles;
-        public Vector3[] Vertices;
-        public Vector2[] Uvs;
-    }
-
-    public struct CubeFaceData
-    {
-        public int[] Triangles;
-        public Vector3[] Vertices;
-        public Vector2[] Uvs;
     }
 }
