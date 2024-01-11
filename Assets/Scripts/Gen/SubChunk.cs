@@ -24,21 +24,16 @@ namespace Assets.Scripts.Gen
         /// </summary>
         /// <param name="blockId"></param>
         /// <returns></returns>
-        public static ushort[,,] SetFilledSubChunk(ushort blockId, bool stripes = false)
+        public static SubChunkData SetFilledSubChunk(ushort blockId, bool stripes = false)
         {
             int size = CHUNK_SIZE + 1;
             var chunkArray = new ushort[size, size, size];
 
             chunkArray.Loop((l) =>
             {
-                if (l.border)
-                {
-                    chunkArray[l.x, l.y, l.z] = blockId;
-                }
-                else
-                {
-                    chunkArray[l.x, l.y, l.z] = blockId;//(ushort)(blockId + 128);
-                }
+                chunkArray[l.x, l.y, l.z] = blockId;
+
+                return null;
             }, "GENERATE SUBCHUNK");
 
             if (stripes)
@@ -46,7 +41,12 @@ namespace Assets.Scripts.Gen
                 chunkArray = StripeChunk(chunkArray);
             }
 
-            return chunkArray;
+            SubChunkData subChunkData = new SubChunkData()
+            {
+                blockArray = chunkArray,
+            };
+
+            return subChunkData;
         }
 
         public static ushort[,,] StripeChunk(ushort[,,] array)
@@ -57,21 +57,21 @@ namespace Assets.Scripts.Gen
                 {
                     array[l.x,l.y,l.z] = 129;
                 }
+
+                return null;
             }, "Stripes");
 
             return array;
         }
 
         // cubos:
-        public static SubChunkData GetSubChunkData(ushort[,,] blockArray)
+        public static SubChunkData GetSubChunkData(SubChunkData subChunkData)
         {
-            var subChunkData = new SubChunkData();
-
-            blockArray.Loop((l) =>
+            subChunkData.blockArray.Loop((l) =>
             {
-                var blockid = blockArray[l.x,l.y,l.z];
+                var blockid = subChunkData.blockArray[l.x,l.y,l.z];
 
-                var vizinhos = blockArray.GetNeighbors(l.x, l.y, l.z);
+                var vizinhos = subChunkData.blockArray.GetNeighbors(l.x, l.y, l.z);
 
                 if ((blockid & 128) == 0)
                 {
@@ -79,9 +79,31 @@ namespace Assets.Scripts.Gen
 
                     subChunkData = subChunkData.Add(cube, l.x - 1, l.y - 1, l.z - 1);// pode ser vazio
                 }
+
+                return null;
             }, "ConvertToVerticeData", new LoopSettings { ignoreBorders = true });
 
             return subChunkData;
+        }
+
+        public static bool CheckHasNonFullBlock(SubChunkData subChunkData)
+        {
+            bool hasNonFullBlock = false;
+            ushort last = subChunkData.blockArray[0,0,0];
+
+            subChunkData.blockArray.Loop((l) =>
+            { 
+                if (last != subChunkData.blockArray[l.x,l.y,l.z])
+                {
+                    hasNonFullBlock = true;
+
+                    return new LoopResult { callBreak = true };
+                }
+
+                return null;
+            }, "CheckNonFullBlock", new () { ignoreBorders = true });
+
+            return hasNonFullBlock;
         }
 
         public static Mesh GetSubChunkMesh(SubChunkData subChunkData)

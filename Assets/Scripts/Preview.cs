@@ -36,7 +36,7 @@ namespace Assets.Scripts
 
         void GenerateSubChunk()
         {
-            var subchunkBlockArray = SubChunk.SetFilledSubChunk(1, true);
+            var subchunkBlockArray = SubChunk.SetFilledSubChunk(1);
             var subchunk = SubChunk.GetSubChunkData(subchunkBlockArray);
             var mesh = SubChunk.GetSubChunkMesh(subchunk);
 
@@ -48,7 +48,7 @@ namespace Assets.Scripts
 
         void GenerateChunk()
         {
-            var chunkBlockArray = Chunk.SetFilledChunk(1, true);
+            var chunkBlockArray = Chunk.SetFilledChunk(1);
             var chunk = Chunk.GetChunkData(chunkBlockArray);
             var mesh = Chunk.GetChunkMesh(chunk);
 

@@ -63,7 +63,7 @@ namespace Assets.Scripts.Utils
             }
         }
 
-        public static void Loop<T>(this T[,,] array, Action<Loop> loopAction, string name = null, LoopSettings? settings = null)
+        public static void Loop<T>(this T[,,] array, Func<Loop,LoopResult?> loopAction, string name = null, LoopSettings? settings = null)
         {
             settings ??= new LoopSettings()
             {
@@ -88,7 +88,7 @@ namespace Assets.Scripts.Utils
 
                         if (settings.Value.ignoreBorders && center == false) continue;
                         
-                        loopAction(new Loop
+                        var result = loopAction(new Loop
                         {
                             x = x,
                             y = y,
@@ -98,6 +98,13 @@ namespace Assets.Scripts.Utils
 
                             border = !center,
                         });
+
+                        if (result is not null && result.Value.callBreak)
+                        {
+                            x = y = int.MaxValue; 
+                            
+                            break;
+                        }
                     }
                 }
             }
@@ -176,6 +183,11 @@ namespace Assets.Scripts.Utils
         public int i;
 
         public bool border;
+    }
+
+    public struct LoopResult
+    {
+        public bool callBreak;
     }
 
     public struct LoopSettings

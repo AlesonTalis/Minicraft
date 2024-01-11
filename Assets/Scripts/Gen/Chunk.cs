@@ -14,9 +14,9 @@ namespace Assets.Scripts.Gen
         public const int CHUNK_SUBCHUNKS_STACK_HEIGHT = 4;
 
 
-        public static ushort[][,,] SetFilledChunk(ushort blockId, bool striped = false)
+        public static SubChunkData[] SetFilledChunk(ushort blockId, bool striped = false)
         {
-            ushort[][,,] chunk = new ushort[CHUNK_SUBCHUNKS_STACK_HEIGHT][,,];
+            SubChunkData[] chunk = new SubChunkData[CHUNK_SUBCHUNKS_STACK_HEIGHT];
 
             for (int i = 0; i < chunk.Length; i++)
             {
@@ -26,7 +26,7 @@ namespace Assets.Scripts.Gen
             return chunk;
         }
 
-        public static ChunkData GetChunkData(ushort[][,,] chunk)
+        public static ChunkData GetChunkData(SubChunkData[] chunk)
         {
             ChunkData chunkData = new ChunkData();
 
