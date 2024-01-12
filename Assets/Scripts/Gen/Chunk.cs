@@ -1,11 +1,6 @@
 ﻿using Assets.Scripts.CE;
 using Assets.Scripts.Model;
 using Assets.Scripts.Utils;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Assets.Scripts.Gen
@@ -37,8 +32,6 @@ namespace Assets.Scripts.Gen
             heightMap.Loop((l) =>
             {
                 int height = (int)Mathf.Floor(heightMap[l.x, l.y] * (SubChunk.CHUNK_SIZE * CHUNK_SUBCHUNKS_STACK_HEIGHT));
-                //int chunk = height / SubChunk.CHUNK_SIZE;
-                //int chunkHeight = height % SubChunk.CHUNK_SIZE;
 
                 for (int i = 0; i < CHUNK_SUBCHUNKS_STACK_HEIGHT; i++)
                 {
@@ -55,7 +48,7 @@ namespace Assets.Scripts.Gen
 
         public static ChunkData GetChunkData(SubChunkData[] chunk)
         {
-            ChunkData chunkData = new ChunkData();
+            ChunkData chunkData = new ();
 
             for (int i = 0; i < chunk.Length; i++)
             {

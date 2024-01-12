@@ -1,27 +1,66 @@
-﻿using Assets.Scripts.Enums;
+﻿using Assets.Scripts.CE;
+using Assets.Scripts.Enums;
 using Assets.Scripts.Gen;
+using Assets.Scripts.Map;
 using Assets.Scripts.Noise;
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Assets.Scripts
 {
     public class Preview : MonoBehaviour
     {
+        [Header("Enums")]
         public GenType genType;
+        public PreviewType previewType;
+        public ModeType mode;
 
+
+        [Header("Settings")]
+        public string seed = "26041996";
+        [Min(0.0001f)]
+        public float scale;
+        [Range(1,8)]
+        public int octaves = 4;
+        [Range(0f,1f)]
+        public float persistance;
+        [Min(1)]
+        public float lacunarity;
+        [Min(0.0001f)]
+        public float power;
+
+
+        [Header("Preview")]
         public MeshFilter meshFilter;
+        public MeshRenderer meshRenderer;
+        public GameObject chunkPreview;
+        public Material defaultMaterial;
 
 
         public void Generate()
         {
             Debug.Log("Generating...");
 
-            switch (genType)
+            if (mode == ModeType.Mesh)
             {
-                case GenType.Cube: GenerateCube(); break;
-                case GenType.SubChunk: GenerateSubChunk(); break;
-                case GenType.Chunk: GenerateChunk(); break;
+
+                switch (genType)
+                {
+                    case GenType.Cube: GenerateCube(); break;
+                    case GenType.SubChunk: GenerateSubChunk(); break;
+                    case GenType.Chunk: GenerateChunk(); break;
+                }
+
+            }
+            else if (mode == ModeType.Map)
+            {
+
+                switch (previewType)
+                {
+                    case PreviewType.HeightMap: GenerateHeightMap(); break;
+                }
+
             }
         }
 
@@ -34,6 +73,8 @@ namespace Assets.Scripts
 
             //Debug.Log(string.Join(", ", cube.Triangles));
         }
+
+        #region <MESH>
 
         void GenerateSubChunk()
         {
@@ -51,13 +92,67 @@ namespace Assets.Scripts
         {
             var heightMap = HeightmapNoise.GenerateHeightMap();
             var chunk = Chunk.SetChunkDataHeightMap(heightMap);
-            chunk = Chunk.GetChunkData(chunk);
-            var mesh = Chunk.GetChunkMesh(chunk);
 
-            meshFilter.sharedMesh = mesh;
+            ClearObjects(chunkPreview.transform);
+
+            for (int i = 0; i < chunk.subChunks.Length; i++)
+            {
+                var pos = chunk.subChunks[i].GetPos();
+                GameObject go = new GameObject($"CHUNK {pos}");
+
+                go.transform.localPosition = pos;
+                go.transform.SetParent(chunkPreview.transform);
+
+                var renderer = go.AddComponent<MeshRenderer>();
+                var filter = go.AddComponent<MeshFilter>();
+
+                var mesh = SubChunk.GetSubChunkMesh(chunk.subChunks[i]);
+
+                filter.sharedMesh = mesh;
+                renderer.sharedMaterial = defaultMaterial;
+
+                Debug.Log(string.Join(", ", chunk.subChunks[i].TrianglesList));
+                Debug.Log(string.Join(", ", chunk.subChunks[i].VerticesList));
+            }
 
             //Debug.Log(string.Join(", ", chunk.TrianglesList));
             //Debug.Log(string.Join(", ", chunk.VerticesList));
         }
+
+        void ClearObjects(Transform parent)
+        {
+            for (int i = parent.childCount - 1; i >= 0; i--)
+            {
+                var child = parent.GetChild(i);
+#if UNITY_EDITOR
+                DestroyImmediate(child.gameObject);
+#else
+                Destroy(child.gameObject);
+#endif
+            }
+        }
+
+        #endregion
+
+        #region <MAP>
+
+        void GenerateHeightMap()
+        {
+            var heightMap = MapGen.GenerateHeightMap(128, Vector2.zero, new MapSettings
+            {
+                scale = scale,
+                octaves = octaves,
+                persistance = persistance,
+                lacunarity = lacunarity,
+                seed = seed.GetHashCode(),
+                power = power,
+            });
+
+            var texture = MapPreview.GenerateTextureFromHeightMap(heightMap);
+
+            meshRenderer.sharedMaterial.mainTexture = texture;
+        }
+
+        #endregion
     }
 }

@@ -30,5 +30,7 @@ namespace Assets.Scripts.CE
                 }
             }
         }
+
+        public static Vector3 GetPos(this SubChunkData subchunk) => new (subchunk.chunkPosX, subchunk.chunkPosY, subchunk.chunkPosZ);
     }
 }
