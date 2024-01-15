@@ -18,17 +18,11 @@ namespace Assets.Scripts
 
 
         [Header("Settings")]
-        public string seed = "26041996";
-        [Min(0.0001f)]
-        public float scale;
-        [Range(1,8)]
-        public int octaves = 4;
-        [Range(0f,1f)]
-        public float persistance;
-        [Min(1)]
-        public float lacunarity;
-        [Min(0.0001f)]
-        public float power;
+        public string globalSeed = "26041996";
+        public MapSettings heightMapSettings = new ()
+        {
+            octaves = 4,
+        };
 
 
         [Header("Preview")]
@@ -138,15 +132,8 @@ namespace Assets.Scripts
 
         void GenerateHeightMap()
         {
-            var heightMap = MapGen.GenerateHeightMap(128, Vector2.zero, new MapSettings
-            {
-                scale = scale,
-                octaves = octaves,
-                persistance = persistance,
-                lacunarity = lacunarity,
-                seed = seed.GetHashCode(),
-                power = power,
-            });
+            var seeds = MapGen.GenerateSeeds(globalSeed.GetHashCode());
+            var heightMap = MapGen.GenerateHeightMap(128, Vector2.zero, heightMapSettings.ApplySeed(seeds.heightMapSeed));
 
             var texture = MapPreview.GenerateTextureFromHeightMap(heightMap);
 

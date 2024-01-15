@@ -657,6 +657,19 @@ MonoBehaviour:
   persistance: 0.432
   lacunarity: 2.15
   power: 0.75
+  heightMapSettings:
+    scale: 1000
+    octaves: 5
+    persistance: 0.432
+    lacunarity: 2.15
+    seed: 194
+    power: 0.75
+    multiplier:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
   meshFilter: {fileID: 1851907844}
   meshRenderer: {fileID: 921073277}
   chunkPreview: {fileID: 594215136}
