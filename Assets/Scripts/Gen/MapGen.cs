@@ -42,6 +42,16 @@ namespace Assets.Scripts.Gen
 
             return heightMap;
         }
+        
+        public static float[,] GenerateHumidityMap(int size, Vector2 offset, MapSettings settings)
+        {
+            var heightMap = Generate2dFloat(size, offset, settings, (value) =>
+            {
+                return value;
+            });
+
+            return heightMap;
+        }
 
         static float[,] Generate2dFloat(int size, Vector2 offset, MapSettings settings, Func<float, float> actionPerPoint)
         {

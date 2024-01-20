@@ -27,6 +27,10 @@ namespace Assets.Scripts
         {
             octaves = 4,
         };
+        public MapSettings humidityMapSettings = new ()
+        {
+            octaves = 4,
+        };
 
 
         [Header("Preview")]
@@ -62,6 +66,7 @@ namespace Assets.Scripts
                 {
                     case PreviewType.HeightMap: GenerateHeightMap(); break;
                     case PreviewType.HeatMap: GenerateHeatMap(); break;
+                    case PreviewType.HumidityMap: GenerateHumidityMap(); break;
                 }
 
             }
@@ -155,6 +160,15 @@ namespace Assets.Scripts
             var heatMap = MapGen.GenerateHeatMap(mapPreviewSize, mapPreviewOffset, heatMapSettings.ApplySeed(GetSeeds().heatMapSeed));
 
             var texture = MapPreview.GenerateTextureForGradientColors(heatMap, mapPreviewHeatGradient);
+
+            meshRenderer.sharedMaterial.mainTexture = texture;
+        }
+
+        void GenerateHumidityMap()
+        {
+            var humidity = MapGen.GenerateHumidityMap(mapPreviewSize, mapPreviewOffset, humidityMapSettings.ApplySeed(GetSeeds().humiditySeed));
+
+            var texture = MapPreview.GenerateTextureForGradientColors(humidity, mapPreviewHumidityGradient);
 
             meshRenderer.sharedMaterial.mainTexture = texture;
         }
