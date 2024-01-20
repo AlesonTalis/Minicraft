@@ -3,6 +3,8 @@
     public enum PreviewType
     {
         HeightMap,
+        HeatMap,
+        HumidityMap,
         BiomeMap,
         TerrainMap,
         FinalMap,

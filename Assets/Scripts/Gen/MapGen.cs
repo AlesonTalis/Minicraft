@@ -16,6 +16,7 @@ namespace Assets.Scripts.Gen
 
             seedValues.heightMapSeed = random.Next();
             seedValues.heatMapSeed = random.Next();
+            seedValues.humiditySeed = random.Next();
 
             return seedValues;
         }
@@ -36,8 +37,6 @@ namespace Assets.Scripts.Gen
         {
             var heightMap = Generate2dFloat(size, offset, settings, (value) =>
             {
-                value = Mathf.Clamp01((value + 1f) * 0.5f);
-
                 return value;
             });
 
@@ -129,6 +128,7 @@ namespace Assets.Scripts.Gen
     {
         public int heightMapSeed;
         public int heatMapSeed;
+        public int humiditySeed;
         // outras seeds
     }
 }

@@ -23,13 +23,21 @@ namespace Assets.Scripts
         {
             octaves = 4,
         };
+        public MapSettings heatMapSettings = new ()
+        {
+            octaves = 4,
+        };
 
 
         [Header("Preview")]
+        public int mapPreviewSize = 128;
+        public Vector2 mapPreviewOffset;
         public MeshFilter meshFilter;
         public MeshRenderer meshRenderer;
         public GameObject chunkPreview;
         public Material defaultMaterial;
+        public Gradient mapPreviewHeatGradient;
+        public Gradient mapPreviewHumidityGradient;
 
 
         public void Generate()
@@ -53,6 +61,7 @@ namespace Assets.Scripts
                 switch (previewType)
                 {
                     case PreviewType.HeightMap: GenerateHeightMap(); break;
+                    case PreviewType.HeatMap: GenerateHeatMap(); break;
                 }
 
             }
@@ -130,12 +139,22 @@ namespace Assets.Scripts
 
         #region <MAP>
 
+        SeedValues GetSeeds() => MapGen.GenerateSeeds(globalSeed.GetHashCode());
+
         void GenerateHeightMap()
         {
-            var seeds = MapGen.GenerateSeeds(globalSeed.GetHashCode());
-            var heightMap = MapGen.GenerateHeightMap(128, Vector2.zero, heightMapSettings.ApplySeed(seeds.heightMapSeed));
+            var heightMap = MapGen.GenerateHeightMap(mapPreviewSize, mapPreviewOffset, heightMapSettings.ApplySeed(GetSeeds().heightMapSeed));
 
             var texture = MapPreview.GenerateTextureFromHeightMap(heightMap);
+
+            meshRenderer.sharedMaterial.mainTexture = texture;
+        }
+
+        void GenerateHeatMap()
+        {
+            var heatMap = MapGen.GenerateHeatMap(mapPreviewSize, mapPreviewOffset, heatMapSettings.ApplySeed(GetSeeds().heatMapSeed));
+
+            var texture = MapPreview.GenerateTextureForGradientColors(heatMap, mapPreviewHeatGradient);
 
             meshRenderer.sharedMaterial.mainTexture = texture;
         }
