@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.Utils;
+using System;
 using UnityEngine;
 
 namespace Assets.Scripts.Gen
@@ -21,7 +22,31 @@ namespace Assets.Scripts.Gen
 
         public static float[,] GenerateHeightMap(int size, Vector2 offset, MapSettings settings)
         {
-            float[,] map = new float[size,size];
+            var heightMap = Generate2dFloat(size, offset, settings, (value) =>
+            {
+                value = settings.multiplier.Evaluate(value);
+
+                return value;
+            });
+
+            return heightMap;
+        }
+
+        public static float[,] GenerateHeatMap(int size, Vector2 offset, MapSettings settings)
+        {
+            var heightMap = Generate2dFloat(size, offset, settings, (value) =>
+            {
+                value = Mathf.Clamp01((value + 1f) * 0.5f);
+
+                return value;
+            });
+
+            return heightMap;
+        }
+
+        static float[,] Generate2dFloat(int size, Vector2 offset, MapSettings settings, Func<float, float> actionPerPoint)
+        {
+            float[,] map = new float[size, size];
 
             FastNoise noise = new FastNoise(settings.seed);
 
@@ -53,22 +78,17 @@ namespace Assets.Scripts.Gen
                     amplitude *= settings.persistance;
                 }
 
-                value *= 0.85f;
+                value *= settings.intensity;
+
+                value = actionPerPoint(value);
 
                 value = Mathf.Clamp01((value + 1f) * 0.5f);
-
-                value = settings.multiplier.Evaluate(value);
 
                 return Mathf.Pow(value, settings.power);
             });
 
 
             return map;
-        }
-
-        public static float[,] GenerateHeatMap(int size, Vector2 offset, MapSettings settings)
-        {
-            return new float[0,0];
         }
 
         static (float x, float y) GetPosition(Vector2 offset, int xI, int yI, MapSettings settings, float frequency)
@@ -98,7 +118,11 @@ namespace Assets.Scripts.Gen
         [Min(0.01f)]
         public float power;
 
+        [Range(0f,1f)]
+        public float intensity;
+
         public AnimationCurve multiplier;
+
     }
 
     public struct SeedValues

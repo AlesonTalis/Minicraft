@@ -10,10 +10,7 @@ namespace Assets.Scripts.Map
             int width = heightMap.GetLength(0);
             int height = heightMap.GetLength(1);
 
-            Texture2D texture = new Texture2D(width, height);
             Color32[] colors = new Color32[width * height];
-            
-            texture.filterMode = FilterMode.Point;
 
             heightMap.Loop((l) =>
             {
@@ -26,6 +23,16 @@ namespace Assets.Scripts.Map
                 return null;
             });
 
+            var texture = GenerateTextureFromColorArray(width, height, colors);
+
+            return texture;
+        }
+
+        static Texture2D GenerateTextureFromColorArray(int width, int height, Color32[] colors)
+        {
+            Texture2D texture = new Texture2D(width, height);
+
+            texture.filterMode = FilterMode.Point;
 
             texture.SetPixels32(colors);
             texture.Apply();
