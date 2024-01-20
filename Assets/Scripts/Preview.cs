@@ -3,8 +3,11 @@ using Assets.Scripts.Enums;
 using Assets.Scripts.Gen;
 using Assets.Scripts.Map;
 using Assets.Scripts.Noise;
+using Assets.Scripts.Scriptables;
 using System.Collections;
+using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 
 namespace Assets.Scripts
@@ -31,6 +34,7 @@ namespace Assets.Scripts
         {
             octaves = 4,
         };
+        public BiomeSettingSC[] biomes;
 
 
         [Header("Preview")]
@@ -67,9 +71,36 @@ namespace Assets.Scripts
                     case PreviewType.HeightMap: GenerateHeightMap(); break;
                     case PreviewType.HeatMap: GenerateHeatMap(); break;
                     case PreviewType.HumidityMap: GenerateHumidityMap(); break;
+                    case PreviewType.BiomeMap: GenerateBiomeMap(); break;
                 }
 
             }
+        }
+
+        public void LoadBiomesFolder(string[] files)
+        {
+            List<BiomeSettingSC> biomes = new List<BiomeSettingSC>();
+
+            foreach (var file in files)
+            {
+                try
+                {
+                    var biome = (BiomeSettingSC)AssetDatabase.LoadAssetAtPath<BiomeSettingSC>(file);
+
+                    biomes.Add(biome);
+                }
+                catch (System.Exception ex) {
+                    Debug.LogError($"LOAD_BIOME_ERROR: \n\"{file}\"\n\n{ex.Message}");
+                }
+            }
+
+            this.biomes = biomes.ToArray();
+        }
+        
+        public void LoadBiomesFolder(string path)
+        {
+            Debug.Log(path);
+            this.biomes = Resources.LoadAll<BiomeSettingSC>(path);
         }
 
         void GenerateCube()
@@ -171,6 +202,11 @@ namespace Assets.Scripts
             var texture = MapPreview.GenerateTextureForGradientColors(humidity, mapPreviewHumidityGradient);
 
             meshRenderer.sharedMaterial.mainTexture = texture;
+        }
+
+        void GenerateBiomeMap()
+        {
+
         }
 
         #endregion
