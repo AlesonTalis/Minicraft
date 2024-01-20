@@ -35,4 +35,10 @@ namespace Assets.Scripts.Scriptables
         [Range(0f,1f)]
         public float biomeMaxHumidity;
     }
+
+    public struct BiomeSetting
+    {
+        public string biomeName { get; set; }
+        public string biomeTitle { get; set; }
+    }
 }
