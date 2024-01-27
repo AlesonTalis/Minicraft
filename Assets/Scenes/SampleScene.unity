@@ -709,6 +709,7 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
+  biomes: []
   mapPreviewSize: 128
   mapPreviewOffset: {x: 0, y: 0}
   meshFilter: {fileID: 1851907844}

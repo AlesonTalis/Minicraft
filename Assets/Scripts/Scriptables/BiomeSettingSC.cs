@@ -38,7 +38,16 @@ namespace Assets.Scripts.Scriptables
 
     public struct BiomeSetting
     {
+        public string? fileName;
+
         public string biomeName { get; set; }
         public string biomeTitle { get; set; }
+        public bool biomeIsOcean { get; set; }
+
+        public Color32 biomeColor { get; set; }
+
+        public Vector2 biomeHeightRange { get; set; }
+        public Vector2 biomeTemperatureRange { get; set; }
+        public Vector2 biomeHumidityRange { get; set; }
     }
 }

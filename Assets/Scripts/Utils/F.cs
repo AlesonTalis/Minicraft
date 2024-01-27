@@ -1,5 +1,6 @@
 ﻿using Assets.Scripts.Gen;
 using Assets.Scripts.Model;
+using Assets.Scripts.Scriptables;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,16 @@ namespace Assets.Scripts.Utils
 {
     public static class F
     {
+        #region Custom Extensions
+
+        public static string GetFileName(this BiomeSetting? biomeSettings, string fileExtension = ".biome.json")
+        {
+            return biomeSettings.Value.fileName is not null 
+                ? biomeSettings.Value.fileName : biomeSettings.Value.biomeName + fileExtension;
+        }
+
+        #endregion
+
         #region LOOPS
 
         public static bool Loop<T>(this T[] _, int SIZE, ref int i)
@@ -291,6 +302,8 @@ namespace Assets.Scripts.Utils
         }
 
         public static int CalcIndex(int SIZE, int x, int y, int z) => y * z * SIZE + x;
+
+
     }
 
     public struct Loop

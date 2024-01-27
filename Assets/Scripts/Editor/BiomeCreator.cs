@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.Scriptables;
+using Assets.Scripts.Utils;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -22,7 +23,7 @@ namespace Assets.Scripts.Editor
 
 
         private string saveLocation = "/Biomes/";
-        private BiomeSetting? loadedBiomeSetting = null;
+        private BiomeSetting? loadedBiomeSetting = new BiomeSetting();
 
 
         private void OnGUI()
@@ -94,6 +95,10 @@ namespace Assets.Scripts.Editor
 
             settings.biomeName = Label(new Vector2(0, 0), "FileName", settings.biomeName);
             settings.biomeTitle = Label(new Vector2(0, 30), "BiomeTitle", settings.biomeTitle);
+            settings.biomeColor = ColorPicker(new Vector2(0, 60), "BiomeColor", settings.biomeColor);
+            settings.biomeHeightRange = RangePicker(new Vector2(0, 90), "HeightLimits", settings.biomeHeightRange);
+            settings.biomeTemperatureRange = RangePicker(new Vector2(0, 120), "HeatLimits", settings.biomeTemperatureRange);
+            settings.biomeHumidityRange = RangePicker(new Vector2(0, 150), "HumidLimits", settings.biomeHumidityRange);
 
             // save
 
@@ -115,6 +120,49 @@ namespace Assets.Scripts.Editor
             return value;
         }
 
+        private Color32 ColorPicker(Vector2 pos, string title, Color32 color)
+        {
+            GUI.BeginGroup(new Rect(pos, new Vector2(300, 20)));
+
+            GUI.Label(new Rect(0, 0, 100, 20), title);
+
+            GUI.BeginGroup(new Rect(100, 0, 200, 20));
+            color = EditorGUILayout.ColorField(color);
+
+            GUI.EndGroup();
+            GUI.EndGroup();
+
+            return color;
+        }
+
+        private Vector2 RangePicker(Vector2 pos, string title, Vector2 value)
+        {
+            GUI.BeginGroup(new Rect(pos, new Vector2(300, 20)));
+
+            GUI.Label(new Rect(0, 0, 100, 20), title);
+
+            GUI.BeginClip(new Rect(100, 0, 200, 20));
+
+            float min = value.x, max = value.y;
+
+            GUI.Label(new Rect(0, 0, 40, 20), min.ToString("F2"));
+            float _min = GUI.HorizontalSlider(new Rect(50, 0, 50, 20), min, 0, 1);
+            
+            float _max = GUI.HorizontalSlider(new Rect(110, 0, 50, 20), max, 0, 1);
+            GUI.Label(new Rect(170, 0, 40, 20), max.ToString("F2"));
+            
+            GUI.EndClip();
+            GUI.EndGroup();
+
+            value = new Vector2()
+            {
+                x = Mathf.Clamp(_min, 0f, max),
+                y = Mathf.Clamp(_max, min, 1f),
+            };
+
+            return value;
+        }
+
         void ChangeSaveLocation()
         {
             var path = EditorUtility.OpenFolderPanel("Change Biomes Save Location", "", "");
@@ -126,6 +174,8 @@ namespace Assets.Scripts.Editor
         {
             var file = EditorUtility.OpenFilePanel("Open Biome File", "", "biome.json");
 
+            if (file is null) return;
+
             var fileData = File.ReadAllText(file);
 
             loadedBiomeSetting = JsonConvert.DeserializeObject<BiomeSetting>(fileData);
@@ -133,7 +183,8 @@ namespace Assets.Scripts.Editor
         void SaveBiomeFile()
         {
             string fileData = JsonConvert.SerializeObject(loadedBiomeSetting);
-            string path = Application.dataPath + saveLocation + loadedBiomeSetting.Value.biomeName + ".biome.json";
+            string fileName = loadedBiomeSetting.GetFileName();
+            string path = Application.dataPath + saveLocation + fileName;
 
             File.WriteAllText(path, fileData);
 
@@ -141,7 +192,10 @@ namespace Assets.Scripts.Editor
         }
         void CreateBiomeFile()
         {
-            loadedBiomeSetting = new BiomeSetting();
+            loadedBiomeSetting = new BiomeSetting()
+            {
+                biomeHeightRange = new Vector2(0.25f, 0.75f)
+            };
         }
     }
 }
