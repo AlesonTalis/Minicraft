@@ -1,6 +1,7 @@
 ﻿using Assets.Scripts.CE;
 using Assets.Scripts.Enums;
 using Assets.Scripts.Gen;
+using Assets.Scripts.Utils;
 using Assets.Scripts.Map;
 using Assets.Scripts.Noise;
 using Assets.Scripts.Scriptables;
@@ -211,7 +212,17 @@ namespace Assets.Scripts
 
         void GenerateBiomeMap()
         {
+            var seeds = GetSeeds();
 
+            var heightMap = MapGen.GenerateHeightMap(mapPreviewSize, mapPreviewOffset, heightMapSettings.ApplySeed(seeds.heightMapSeed));
+            var heatMap = MapGen.GenerateHeatMap(mapPreviewSize, mapPreviewOffset, heatMapSettings.ApplySeed(seeds.heatMapSeed));
+            var humidity = MapGen.GenerateHumidityMap(mapPreviewSize, mapPreviewOffset, humidityMapSettings.ApplySeed(seeds.humiditySeed));
+
+            var biomeMap = MapGen.GenerateBiomeMap(heightMap, heatMap, humidity, biomes);
+
+            var texture = MapPreview.GenerateTextureFromBiomeMap(biomeMap, biomes.GetColorDictionary());
+
+            meshRenderer.sharedMaterial.mainTexture = texture;
         }
 
         #endregion

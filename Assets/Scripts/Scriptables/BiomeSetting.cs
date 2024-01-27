@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using GD.MinMaxSlider;
+using System;
 
 namespace Assets.Scripts.Scriptables
 {
@@ -9,18 +10,27 @@ namespace Assets.Scripts.Scriptables
         public string? FileName { get; set; }
 
         [SerializeField]
-        private string biomeName;
-        public string BiomeName
+//        [HideInInspector]
+        private int id;
+        public int Id
         {
-            get
-            {
-                return biomeName;
-            }
-            set
-            {
-                biomeName = value;
-            }
+            get { return id; }
+            set { id = value; }
         }
+
+        //[SerializeField]
+        //private string biomeName;
+        //public string BiomeName
+        //{
+        //    get
+        //    {
+        //        return biomeName;
+        //    }
+        //    set
+        //    {
+        //        biomeName = value;
+        //    }
+        //}
 
         [SerializeField]
         private string biomeTitle;
@@ -149,6 +159,11 @@ namespace Assets.Scripts.Scriptables
         }
 
 
+        public void ApplyId()
+        {
+            id = Guid.NewGuid().GetHashCode();
+        }
+
         public void ApplyOceanHeight(float oceanHeight)
         {
             if (biomeRespectOcean is false) return;
@@ -173,7 +188,7 @@ namespace Assets.Scripts.Scriptables
         public string GetFileName(string fileExtension = ".biome.json")
         {
             return FileName is not null
-                ? FileName : biomeName + fileExtension;
+                ? FileName : biomeTitle.Replace(" ", "_") + fileExtension;
         }
 
     }

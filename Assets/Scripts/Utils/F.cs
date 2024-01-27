@@ -14,7 +14,34 @@ namespace Assets.Scripts.Utils
     {
         #region Custom Extensions
 
+        public static BiomeSetting GetBiomeInRange(this BiomeSetting[] biomes, float height, float heat, float humidity)
+        {
+            for (int i = biomes.Length - 1; i >= 0; i--)
+            {
+                bool checkHeight = height >= biomes[i].BiomeHeightRange.x && height <= biomes[i].BiomeHeightRange.y;
+                bool checkTemperature = heat >= biomes[i].BiomeTemperatureRange.x && heat <= biomes[i].BiomeTemperatureRange.y;
+                bool checkHumidity = humidity >= biomes[i].BiomeHumidityRange.x && humidity <= biomes[i].BiomeHumidityRange.y;
 
+                //Debug.Log($"{height}, {heat}, {humidity} {checkHumidity}-{checkHeight}-{checkTemperature}");
+
+                if ((i == 0) || (checkHeight && checkTemperature && checkHumidity))
+                {
+                    return biomes[i];
+                }
+            }
+
+            return null;
+        }
+
+        public static Dictionary<int,Color32> GetColorDictionary(this BiomeSetting[] biomes)
+        {
+            var dic = new Dictionary<int,Color32>();
+
+            foreach (var e in biomes)
+                dic.Add(e.Id, e.BiomeColor);
+
+            return dic;
+        }
 
         #endregion
 

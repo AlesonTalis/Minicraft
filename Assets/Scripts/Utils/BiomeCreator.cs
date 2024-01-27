@@ -57,7 +57,21 @@ namespace Assets.Scripts.Utils
 
             //Debug.Log($"{_fileName} {_fileExtension} {_filePath}");
 
-            biomesSettings.ForEach(e => e.SetFileName(_fileName));
+            List<int> ids = new List<int>();
+
+            biomesSettings.ForEach(e => {
+                e.SetFileName(_fileName);
+
+                Debug.Log(e.Id);
+
+                if (ids.Contains(e.Id))
+                {
+                    e.ApplyId();
+
+                }
+
+                ids.Add(e.Id);
+            });
 
             var json = JsonConvert.SerializeObject(biomesSettings);
 

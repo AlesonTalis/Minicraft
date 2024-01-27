@@ -1,4 +1,7 @@
-﻿using Assets.Scripts.Utils;
+﻿using Assets.Scripts.Scriptables;
+using Assets.Scripts.Utils;
+using Newtonsoft.Json.Linq;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Assets.Scripts.Map
@@ -42,6 +45,29 @@ namespace Assets.Scripts.Map
                 int y = l.y;
 
                 colors[i] = gradient.Evaluate(values[x, y]);
+
+                return null;
+            });
+
+            var texture = GenerateTextureFromColorArray(width, height, colors);
+
+            return texture;
+        }
+
+        public static Texture2D GenerateTextureFromBiomeMap(int[,] values, Dictionary<int,Color32> biomes)
+        {
+            int width = values.GetLength(0);
+            int height = values.GetLength(1);
+
+            Color32[] colors = new Color32[width * height];
+
+            values.Loop((l) =>
+            {
+                int i = l.i;
+                int x = l.x;
+                int y = l.y;
+
+                colors[i] = biomes[values[x,y]];
 
                 return null;
             });

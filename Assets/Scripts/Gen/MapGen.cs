@@ -1,4 +1,5 @@
-﻿using Assets.Scripts.Utils;
+﻿using Assets.Scripts.Scriptables;
+using Assets.Scripts.Utils;
 using System;
 using UnityEngine;
 
@@ -51,6 +52,32 @@ namespace Assets.Scripts.Gen
             });
 
             return heightMap;
+        }
+
+        public static int[,] GenerateBiomeMap(float[,] heightMap, float[,] heatMap, float[,] humidityMap, BiomeSetting[] biomes)
+        {
+            var width = heightMap.GetLength(0);
+            var height = heightMap.GetLength(1);
+
+            var biomeMap = new int[width, height];
+
+            biomeMap.Loop((l) =>
+            {
+                var value = -1;
+                int x = l.x, y = l.y;
+
+                var height = heightMap[x, y];
+                var heat = heatMap[x, y];
+                var humidity = humidityMap[x, y];
+
+                var biome = biomes.GetBiomeInRange(height, heat, humidity);
+
+                value = biome.Id;
+
+                return value;
+            });
+
+            return biomeMap;
         }
 
         static float[,] Generate2dFloat(int size, Vector2 offset, MapSettings settings, Func<float, float> actionPerPoint)
