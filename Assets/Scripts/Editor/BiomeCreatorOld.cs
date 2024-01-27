@@ -12,12 +12,12 @@ using UnityEngine;
 
 namespace Assets.Scripts.Editor
 {
-    public class BiomeCreator : EditorWindow
+    public class BiomeCreatorOld : EditorWindow
     {
         [MenuItem("Window/CreateBiome")]
         public static void Init()
         {
-            var window = EditorWindow.CreateWindow<BiomeCreator>("BiomeCreator");
+            var window = EditorWindow.CreateWindow<BiomeCreatorOld>("BiomeCreator");
         }
 
 
@@ -87,18 +87,18 @@ namespace Assets.Scripts.Editor
 
         private void BiomeEditor(Vector2 pos)
         {
-            if (loadedBiomeSetting.HasValue == false) return;
+            if (loadedBiomeSetting is null) return;
 
             GUI.BeginGroup(new Rect(pos, new Vector2(300, 1000)));
 
-            var settings = loadedBiomeSetting.Value;
+            var settings = loadedBiomeSetting;
 
-            settings.biomeName = Label(new Vector2(0, 0), "FileName", settings.biomeName);
-            settings.biomeTitle = Label(new Vector2(0, 30), "BiomeTitle", settings.biomeTitle);
-            settings.biomeColor = ColorPicker(new Vector2(0, 60), "BiomeColor", settings.biomeColor);
-            settings.biomeHeightRange = RangePicker(new Vector2(0, 90), "HeightLimits", settings.biomeHeightRange);
-            settings.biomeTemperatureRange = RangePicker(new Vector2(0, 120), "HeatLimits", settings.biomeTemperatureRange);
-            settings.biomeHumidityRange = RangePicker(new Vector2(0, 150), "HumidLimits", settings.biomeHumidityRange);
+            //settings.biomeName = Label(new Vector2(0, 0), "FileName", settings.biomeName);
+            //settings.biomeTitle = Label(new Vector2(0, 30), "BiomeTitle", settings.biomeTitle);
+            //settings.biomeColor = ColorPicker(new Vector2(0, 60), "BiomeColor", settings.biomeColor);
+            //settings.biomeHeightRange = RangePicker(new Vector2(0, 90), "HeightLimits", settings.biomeHeightRange);
+            //settings.biomeTemperatureRange = RangePicker(new Vector2(0, 120), "HeatLimits", settings.biomeTemperatureRange);
+            //settings.biomeHumidityRange = RangePicker(new Vector2(0, 150), "HumidLimits", settings.biomeHumidityRange);
 
             // save
 
@@ -192,10 +192,7 @@ namespace Assets.Scripts.Editor
         }
         void CreateBiomeFile()
         {
-            loadedBiomeSetting = new BiomeSetting()
-            {
-                biomeHeightRange = new Vector2(0.25f, 0.75f)
-            };
+            loadedBiomeSetting = new BiomeSetting(); ;
         }
     }
 }

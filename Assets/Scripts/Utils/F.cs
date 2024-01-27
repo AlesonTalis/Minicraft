@@ -14,11 +14,7 @@ namespace Assets.Scripts.Utils
     {
         #region Custom Extensions
 
-        public static string GetFileName(this BiomeSetting? biomeSettings, string fileExtension = ".biome.json")
-        {
-            return biomeSettings.Value.fileName is not null 
-                ? biomeSettings.Value.fileName : biomeSettings.Value.biomeName + fileExtension;
-        }
+
 
         #endregion
 

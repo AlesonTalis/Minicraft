@@ -709,9 +709,10 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-  biomes: []
+  biomes:
+  - {fileID: 11400000, guid: 4513b48737aec9b4e8e74ad9a7b49b6e, type: 2}
   mapPreviewSize: 128
-  mapPreviewOffset: {x: 0, y: 0}
+  mapPreviewOffset: {x: 0.13534854, y: 0.76534855}
   meshFilter: {fileID: 1851907844}
   meshRenderer: {fileID: 921073277}
   chunkPreview: {fileID: 594215136}
