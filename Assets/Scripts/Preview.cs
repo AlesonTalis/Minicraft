@@ -4,8 +4,11 @@ using Assets.Scripts.Gen;
 using Assets.Scripts.Map;
 using Assets.Scripts.Noise;
 using Assets.Scripts.Scriptables;
+using Newtonsoft.Json;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using Unity.Collections;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
@@ -34,7 +37,8 @@ namespace Assets.Scripts
         {
             octaves = 4,
         };
-        public BiomeSettingSC[] biomes;
+        [ReadOnly]
+        public BiomeSetting[] biomes;
 
 
         [Header("Preview")]
@@ -77,30 +81,31 @@ namespace Assets.Scripts
             }
         }
 
-        public void LoadBiomesFolder(string[] files)
-        {
-            List<BiomeSettingSC> biomes = new List<BiomeSettingSC>();
-
-            foreach (var file in files)
-            {
-                try
-                {
-                    var biome = (BiomeSettingSC)AssetDatabase.LoadAssetAtPath<BiomeSettingSC>(file);
-
-                    biomes.Add(biome);
-                }
-                catch (System.Exception ex) {
-                    Debug.LogError($"LOAD_BIOME_ERROR: \n\"{file}\"\n\n{ex.Message}");
-                }
-            }
-
-            this.biomes = biomes.ToArray();
-        }
+        //public void LoadBiomesFolder(string[] files)
+        //{
+        //    //List<BiomeSettingSC> biomes = new List<BiomeSettingSC>();
+        //    //
+        //    //foreach (var file in files)
+        //    //{
+        //    //    try
+        //    //    {
+        //    //        var biome = (BiomeSettingSC)AssetDatabase.LoadAssetAtPath<BiomeSettingSC>(file);
+        //    //
+        //    //        biomes.Add(biome);
+        //    //    }
+        //    //    catch (System.Exception ex) {
+        //    //        Debug.LogError($"LOAD_BIOME_ERROR: \n\"{file}\"\n\n{ex.Message}");
+        //    //    }
+        //    //}
+        //    //
+        //    //this.biomes = biomes.ToArray();
+        //}
         
         public void LoadBiomesFolder(string path)
         {
             Debug.Log(path);
-            this.biomes = Resources.LoadAll<BiomeSettingSC>(path);
+            var file = File.ReadAllText(path);
+            this.biomes = JsonConvert.DeserializeObject<BiomeSetting[]>(file);
         }
 
         void GenerateCube()
