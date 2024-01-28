@@ -649,7 +649,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   genType: 3
-  previewType: 2
+  previewType: 3
   mode: 1
   globalSeed: 26041996
   heightMapSettings:
@@ -710,7 +710,86 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
   biomes:
-  - {fileID: 11400000, guid: 4513b48737aec9b4e8e74ad9a7b49b6e, type: 2}
+  - id: 0
+    biomeTitle: Plains
+    biomeIsOcean: 0
+    biomeRespectOcean: 1
+    biomeColor:
+      serializedVersion: 2
+      rgba: 4281775104
+    biomeHeightRange: {x: 0.33, y: 0.7153728}
+    biomeTemperatureRange: {x: 0.15, y: 0.8220906}
+    biomeHumidityRange: {x: 0.2789547, y: 0.82000005}
+  - id: 432286318
+    biomeTitle: Desert
+    biomeIsOcean: 0
+    biomeRespectOcean: 1
+    biomeColor:
+      serializedVersion: 2
+      rgba: 4284152831
+    biomeHeightRange: {x: 0.33, y: 0.8138815}
+    biomeTemperatureRange: {x: 0.74, y: 1}
+    biomeHumidityRange: {x: 0, y: 0.15790942}
+  - id: 345125562
+    biomeTitle: Florest
+    biomeIsOcean: 0
+    biomeRespectOcean: 1
+    biomeColor:
+      serializedVersion: 2
+      rgba: 4281230627
+    biomeHeightRange: {x: 0.41, y: 0.7344877}
+    biomeTemperatureRange: {x: 0.29826844, y: 0.78}
+    biomeHumidityRange: {x: 0.35240266, y: 1}
+  - id: 1165734034
+    biomeTitle: Mountains
+    biomeIsOcean: 0
+    biomeRespectOcean: 1
+    biomeColor:
+      serializedVersion: 2
+      rgba: 4282795590
+    biomeHeightRange: {x: 0.78657275, y: 1}
+    biomeTemperatureRange: {x: 0, y: 1}
+    biomeHumidityRange: {x: 0, y: 1}
+  - id: -1250136501
+    biomeTitle: Ocean
+    biomeIsOcean: 1
+    biomeRespectOcean: 1
+    biomeColor:
+      serializedVersion: 2
+      rgba: 4290200324
+    biomeHeightRange: {x: 0, y: 0.33}
+    biomeTemperatureRange: {x: 0, y: 1}
+    biomeHumidityRange: {x: 0, y: 1}
+  - id: 1105203425
+    biomeTitle: Ice Plains
+    biomeIsOcean: 0
+    biomeRespectOcean: 1
+    biomeColor:
+      serializedVersion: 2
+      rgba: 4294957508
+    biomeHeightRange: {x: 0.33, y: 0.67}
+    biomeTemperatureRange: {x: 0, y: 0.27275613}
+    biomeHumidityRange: {x: 0.02, y: 0.27575806}
+  - id: 828359465
+    biomeTitle: Sand Beach
+    biomeIsOcean: 0
+    biomeRespectOcean: 1
+    biomeColor:
+      serializedVersion: 2
+      rgba: 4291100666
+    biomeHeightRange: {x: 0.33, y: 0.38231647}
+    biomeTemperatureRange: {x: 0, y: 1}
+    biomeHumidityRange: {x: 0, y: 1}
+  - id: 1380137272
+    biomeTitle: Rock Beach
+    biomeIsOcean: 0
+    biomeRespectOcean: 1
+    biomeColor:
+      serializedVersion: 2
+      rgba: 4290690750
+    biomeHeightRange: {x: 0.33, y: 0.38231647}
+    biomeTemperatureRange: {x: 0, y: 1}
+    biomeHumidityRange: {x: 0, y: 0.3167516}
   mapPreviewSize: 128
   mapPreviewOffset: {x: 0.13534854, y: 0.76534855}
   meshFilter: {fileID: 1851907844}
@@ -2649,6 +2728,133 @@ Transform:
   m_Children: []
   m_Father: {fileID: 408880511}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1864646270
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1864646272}
+  - component: {fileID: 1864646271}
+  m_Layer: 0
+  m_Name: BiomeCreator
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1864646271
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1864646270}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a7d5ed482517b74ba6ed012a6d52366, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  oceanHeight: 0.33
+  fileName: D:/Projetos/Minicraft/Assets/Biomes/default_biomes.biomes.json
+  biomesSettings:
+  - id: 0
+    biomeTitle: Plains
+    biomeIsOcean: 0
+    biomeRespectOcean: 1
+    biomeColor:
+      serializedVersion: 2
+      rgba: 4281775104
+    biomeHeightRange: {x: 0.33, y: 0.7153728}
+    biomeTemperatureRange: {x: 0.15, y: 0.8220906}
+    biomeHumidityRange: {x: 0.2789547, y: 0.82000005}
+  - id: 432286318
+    biomeTitle: Desert
+    biomeIsOcean: 0
+    biomeRespectOcean: 1
+    biomeColor:
+      serializedVersion: 2
+      rgba: 4284152831
+    biomeHeightRange: {x: 0.33, y: 0.8138815}
+    biomeTemperatureRange: {x: 0.74, y: 1}
+    biomeHumidityRange: {x: 0, y: 0.15790942}
+  - id: 345125562
+    biomeTitle: Florest
+    biomeIsOcean: 0
+    biomeRespectOcean: 1
+    biomeColor:
+      serializedVersion: 2
+      rgba: 4281230627
+    biomeHeightRange: {x: 0.41, y: 0.7344877}
+    biomeTemperatureRange: {x: 0.29826844, y: 0.78}
+    biomeHumidityRange: {x: 0.35240266, y: 1}
+  - id: 1165734034
+    biomeTitle: Mountains
+    biomeIsOcean: 0
+    biomeRespectOcean: 1
+    biomeColor:
+      serializedVersion: 2
+      rgba: 4282795590
+    biomeHeightRange: {x: 0.78657275, y: 1}
+    biomeTemperatureRange: {x: 0, y: 1}
+    biomeHumidityRange: {x: 0, y: 1}
+  - id: -1250136501
+    biomeTitle: Ocean
+    biomeIsOcean: 1
+    biomeRespectOcean: 1
+    biomeColor:
+      serializedVersion: 2
+      rgba: 4290200324
+    biomeHeightRange: {x: 0, y: 0.33}
+    biomeTemperatureRange: {x: 0, y: 1}
+    biomeHumidityRange: {x: 0, y: 1}
+  - id: 1105203425
+    biomeTitle: Ice Plains
+    biomeIsOcean: 0
+    biomeRespectOcean: 1
+    biomeColor:
+      serializedVersion: 2
+      rgba: 4294957508
+    biomeHeightRange: {x: 0.33, y: 0.67}
+    biomeTemperatureRange: {x: 0, y: 0.27275613}
+    biomeHumidityRange: {x: 0.02, y: 0.27575806}
+  - id: 828359465
+    biomeTitle: Sand Beach
+    biomeIsOcean: 0
+    biomeRespectOcean: 1
+    biomeColor:
+      serializedVersion: 2
+      rgba: 4291100666
+    biomeHeightRange: {x: 0.33, y: 0.38231647}
+    biomeTemperatureRange: {x: 0, y: 1}
+    biomeHumidityRange: {x: 0, y: 1}
+  - id: 1380137272
+    biomeTitle: Rock Beach
+    biomeIsOcean: 0
+    biomeRespectOcean: 1
+    biomeColor:
+      serializedVersion: 2
+      rgba: 4290690750
+    biomeHeightRange: {x: 0.33, y: 0.38231647}
+    biomeTemperatureRange: {x: 0, y: 1}
+    biomeHumidityRange: {x: 0, y: 0.3167516}
+--- !u!4 &1864646272
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1864646270}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!43 &1926596468
 Mesh:
   m_ObjectHideFlags: 0
@@ -2904,3 +3110,4 @@ SceneRoots:
   - {fileID: 963194228}
   - {fileID: 705507995}
   - {fileID: 408880511}
+  - {fileID: 1864646272}
