@@ -23,9 +23,11 @@ namespace Assets.Scripts.CE
                 globalSeed = seed,
             };
 
-            setings.heightMapSettings = GenerateMapSettings(rnd.Next(), 250f);
-            setings.heatMapSettings = GenerateMapSettings(rnd.Next(), 300f);
-            setings.humiditySettings = GenerateMapSettings(rnd.Next(), 200f);
+            float scaleMultiplier = 5f;
+
+            setings.heightMapSettings = GenerateMapSettings(rnd.Next(), scaleMultiplier * 250f, 3,5, 0.65f, 5f, 1.5f, 0.9f);
+            setings.heatMapSettings = GenerateMapSettings(rnd.Next(), scaleMultiplier * 300f);
+            setings.humiditySettings = GenerateMapSettings(rnd.Next(), scaleMultiplier * 200f);
             setings.biomeSettings = biomeSettings;
 
 
@@ -47,12 +49,12 @@ namespace Assets.Scripts.CE
             return new Gen.MapSettings
             {
                 seed = rnd.Next(),
-                scale = ((float)rnd.NextDouble() * scale) + (scale * 0.5f),
+                scale = ((float)rnd.NextDouble() * scale) + (scale * 0.333f),
                 octaves = rnd.Next(octavesMin, octavesMax),
-                persistance = (float)(rnd.NextDouble() * persistance) + (persistance * 0.5f),
+                persistance = (float)(rnd.NextDouble() * persistance) + (persistance * 0.333f),
                 lacunarity = (float)(rnd.NextDouble() * lacunarity) + 1f,
                 power = (float)(rnd.NextDouble() * power) + 1f,
-                intensity = (float)(rnd.NextDouble() * intensity) + (intensity * 0.5f),
+                intensity = (float)(rnd.NextDouble() * intensity) + (intensity * 0.333f),
             };
         }
     }

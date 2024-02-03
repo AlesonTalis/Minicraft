@@ -58,7 +58,7 @@ namespace Assets.Scripts.Endless
             dad.transform.position = chunkData.GetPosition();
             dad.transform.parent = transform;
 
-            GUIUtility.systemCopyBuffer = JsonConvert.SerializeObject(chunkData.heightMapData);
+            //GUIUtility.systemCopyBuffer = JsonConvert.SerializeObject(chunkData.heightMapData);
 
             for (int i = 0; i < chunkData.subChunks.Length; i++)
             {
@@ -133,9 +133,6 @@ namespace Assets.Scripts.Endless
 
                 var init = DateTime.Now;
 
-                Debug.Log($"Generating chunk {chunkPosition} {frm}");
-
-                // generate chunk here
                 ChunkGenerationLogic(chunkPosition);
 
                 var end = TimeSpan.FromTicks(DateTime.Now.Ticks - init.Ticks).TotalMilliseconds;
