@@ -23,19 +23,29 @@ namespace Assets.Scripts.Gen
             return chunk;
         }
 
-        public static void SetChunkDataHeightMap(this ChunkData chunkData, float[,] heightMap)
+        public static void SetMapData(this ChunkData chunkData, float[,] heightMapData, float[,] heatMapData, float[,] humidityMapData, int[,] biomeMapData)
+        {
+            chunkData.heightMapData = heightMapData;
+            chunkData.heatMapData = heatMapData;
+            chunkData.humidityMapData = humidityMapData;
+
+            chunkData.biomeMapData = biomeMapData;
+        }
+
+        public static void SetChunkDataHeightMap(this ChunkData chunkData, float[,] heightMap = default)
         {
             chunkData.subChunks = SetFilledChunk(1,true);
 
-            heightMap.Loop((l) =>
+            chunkData.heightMapData.Loop((l) =>
             {
-                int height = (int)Mathf.Floor(heightMap[l.x, l.y] * (SubChunk.CHUNK_SIZE * CHUNK_SUBCHUNKS_STACK_HEIGHT));
+                int height = (int)Mathf.Floor(chunkData.heightMapData[l.x, l.y] * (SubChunk.CHUNK_SIZE * CHUNK_SUBCHUNKS_STACK_HEIGHT));
 
                 for (int i = 0; i < CHUNK_SUBCHUNKS_STACK_HEIGHT; i++)
                 {
                     int chunkHieght = height - (i * SubChunk.CHUNK_SIZE);
+                    ushort biomeBlock = (ushort)chunkData.biomeMapData[l.x, l.y];
 
-                    chunkData.subChunks[i].FillColumn(l.x, l.y, chunkHieght, 129, 1);
+                    chunkData.subChunks[i].FillColumn(l.x, l.y, chunkHieght, 129, biomeBlock);
                 }
 
                 return null;

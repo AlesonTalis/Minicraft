@@ -8,6 +8,7 @@ using System;
 using System.Collections;
 using System.Collections.Concurrent;
 using System.Threading;
+using UnityEditor;
 using UnityEngine;
 
 namespace Assets.Scripts.Endless
@@ -56,6 +57,8 @@ namespace Assets.Scripts.Endless
             GameObject dad = new GameObject($"CHUNK_{chunkData.chunkUID}_{chunkData.GetPosition()}");
             dad.transform.position = chunkData.GetPosition();
             dad.transform.parent = transform;
+
+            GUIUtility.systemCopyBuffer = JsonConvert.SerializeObject(chunkData.heightMapData);
 
             for (int i = 0; i < chunkData.subChunks.Length; i++)
             {

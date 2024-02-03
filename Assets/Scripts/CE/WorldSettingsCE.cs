@@ -23,9 +23,9 @@ namespace Assets.Scripts.CE
                 globalSeed = seed,
             };
 
-            setings.heightMapSettings = GenerateMapSettings(rnd.Next());
-            setings.heatMapSettings = GenerateMapSettings(rnd.Next());
-            setings.humiditySettings = GenerateMapSettings(rnd.Next());
+            setings.heightMapSettings = GenerateMapSettings(rnd.Next(), 250f);
+            setings.heatMapSettings = GenerateMapSettings(rnd.Next(), 300f);
+            setings.humiditySettings = GenerateMapSettings(rnd.Next(), 200f);
             setings.biomeSettings = biomeSettings;
 
 
@@ -34,19 +34,25 @@ namespace Assets.Scripts.CE
             return setings;
         }
 
-        static MapSettings GenerateMapSettings(int seed)
+        static MapSettings GenerateMapSettings(int seed, 
+            float scale = 1000f,
+            int octavesMin = 3, int octavesMax = 6,
+            float persistance = 0.5f,
+            float lacunarity = 4f,
+            float power = 2.5f,
+            float intensity = 0.5f)
         {
             System.Random rnd = new (seed);
 
             return new Gen.MapSettings
             {
                 seed = rnd.Next(),
-                scale = (float)rnd.NextDouble() * 1000f,
-                octaves = rnd.Next(3, 6),
-                persistance = (float)(rnd.NextDouble() * 0.5f) + 0.25f,
-                lacunarity = (float)(rnd.NextDouble() * 2.5f) + 1f,
-                power = (float)(rnd.NextDouble() * 2.5f) + 1f,
-                intensity = (float)(rnd.NextDouble() * 0.5f) + 0.5f,
+                scale = ((float)rnd.NextDouble() * scale) + (scale * 0.5f),
+                octaves = rnd.Next(octavesMin, octavesMax),
+                persistance = (float)(rnd.NextDouble() * persistance) + (persistance * 0.5f),
+                lacunarity = (float)(rnd.NextDouble() * lacunarity) + 1f,
+                power = (float)(rnd.NextDouble() * power) + 1f,
+                intensity = (float)(rnd.NextDouble() * intensity) + (intensity * 0.5f),
             };
         }
     }

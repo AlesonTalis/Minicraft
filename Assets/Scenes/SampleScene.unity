@@ -318,11 +318,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_ThreadAmount: 20
-  m_ChunkAmountTeste: 32
+  m_ChunkAmountTeste: 16
   m_ThreadSleepMiliseconds: 10
   m_TerrainMaterial: {fileID: 2100000, guid: 26f4894d567708846a731e70d4d2d7ad, type: 2}
   m_BiomesSettings: {fileID: 4900000, guid: f071ac021aa881d439ed4d9fcd05f1b3, type: 3}
-  seed: aleson123
+  seed: 26041996
 --- !u!4 &267982473
 Transform:
   m_ObjectHideFlags: 0
@@ -369,15 +369,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   genType: 3
   previewType: 0
-  mode: 0
+  mode: 1
   globalSeed: 26041996
   heightMapSettings:
     scale: 1000
     octaves: 4
     persistance: 0.523
-    lacunarity: 1.99
-    power: 2
-    intensity: 0.925
+    lacunarity: 2.5
+    power: 1.18
+    intensity: 0.857
     multiplier:
       serializedVersion: 2
       m_Curve:
@@ -773,7 +773,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &594215137
 Transform:
   m_ObjectHideFlags: 0
@@ -1240,7 +1240,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!23 &921073277
 MeshRenderer:
   m_ObjectHideFlags: 0
