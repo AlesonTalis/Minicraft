@@ -23,12 +23,9 @@ namespace Assets.Scripts.Gen
             return chunk;
         }
 
-        public static ChunkData SetChunkDataHeightMap(float[,] heightMap)
+        public static void SetChunkDataHeightMap(this ChunkData chunkData, float[,] heightMap)
         {
-            ChunkData chunkData = new ChunkData()
-            {
-                subChunks = SetFilledChunk(1)
-            };
+            chunkData.subChunks = SetFilledChunk(1,true);
 
             heightMap.Loop((l) =>
             {
@@ -43,10 +40,6 @@ namespace Assets.Scripts.Gen
 
                 return null;
             }, "ConvertHeightMapToChunkData");
-
-            //Debug.Log(JsonConvert.SerializeObject(chunkData));
-
-            return chunkData;
         }
 
         public static ChunkData GetChunkData(SubChunkData[] chunk)
@@ -63,7 +56,7 @@ namespace Assets.Scripts.Gen
             return chunkData;
         }
         
-        public static ChunkData GetChunkData(ChunkData chunkData)
+        public static void GetChunkData(this ChunkData chunkData)
         {
             for (int i = 0; i < chunkData.subChunks.Length; i++)
             {
@@ -72,8 +65,17 @@ namespace Assets.Scripts.Gen
 
                 chunkData.AddList(subChunkData, new Vector3(0, i * SubChunk.CHUNK_SIZE, 0));
             }
+        }
+        
+        public static void GetChunkDataValues(this ChunkData chunkData)
+        {
+            for (int i = 0; i < chunkData.subChunks.Length; i++)
+            {
+                var subChunkData = SubChunk.GetSubChunkData(chunkData.subChunks[i]);
+                subChunkData.PosY = SubChunk.CHUNK_SIZE * i;
 
-            return chunkData;
+                chunkData.AddList(subChunkData, new Vector3(0, i * SubChunk.CHUNK_SIZE, 0));
+            }
         }
 
         public static Mesh GetChunkMesh(ChunkData chunk)

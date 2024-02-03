@@ -26,7 +26,7 @@ namespace Assets.Scripts.Gen
         {
             var heightMap = Generate2dFloat(size, offset, settings, (value) =>
             {
-                value = settings.multiplier.Evaluate(value);
+                //value = settings.multiplier.Evaluate(value);
 
                 return value;
             });

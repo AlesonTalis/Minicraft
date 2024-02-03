@@ -13,6 +13,7 @@ using Unity.Collections;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
+using Assets.Scripts.Model;
 
 namespace Assets.Scripts
 {
@@ -125,19 +126,17 @@ namespace Assets.Scripts
         {
             var subchunkBlockArray = SubChunk.SetFilledSubChunk(1,true);
             var subchunk = SubChunk.GetSubChunkData(subchunkBlockArray);
-            var mesh = SubChunk.GetSubChunkMesh(subchunk);
+            var mesh = subchunk.GetMeshData();
 
             meshFilter.sharedMesh = mesh;
-
-            //Debug.Log(string.Join(", ", subchunk.TrianglesList));
-            //Debug.Log(string.Join(", ", subchunk.VerticesList));
         }
 
         void GenerateChunk()
         {
+            ChunkData chunk = new ChunkData();
             var heightMap = HeightmapNoise.GenerateHeightMap();
-            var subChunks = Chunk.SetChunkDataHeightMap(heightMap);
-            var chunk = Chunk.GetChunkData(subChunks);
+            chunk.SetChunkDataHeightMap(heightMap);
+            chunk.GetChunkData();
 
             ClearObjects(chunkPreview.transform);
 
@@ -152,17 +151,11 @@ namespace Assets.Scripts
                 var renderer = go.AddComponent<MeshRenderer>();
                 var filter = go.AddComponent<MeshFilter>();
 
-                var mesh = SubChunk.GetSubChunkMesh(chunk.subChunks[i]);
+                var mesh = chunk.subChunks[i].GetMeshData();
 
                 filter.sharedMesh = mesh;
                 renderer.sharedMaterial = defaultMaterial;
-
-                //Debug.Log(string.Join(", ", chunk.subChunks[i].TrianglesList));
-                //Debug.Log(string.Join(", ", chunk.subChunks[i].VerticesList));
             }
-
-            //Debug.Log(string.Join(", ", chunk.TrianglesList));
-            //Debug.Log(string.Join(", ", chunk.VerticesList));
         }
 
         void ClearObjects(Transform parent)

@@ -65,7 +65,7 @@ namespace Assets.Scripts.Gen
         }
 
         // cubos:
-        public static SubChunkData GetSubChunkData(SubChunkData subChunkData)
+        public static BaseData GetSubChunkData(SubChunkData subChunkData)
         {
             subChunkData.BlockArray.Loop((l) =>
             {
@@ -106,7 +106,7 @@ namespace Assets.Scripts.Gen
             return hasNonFullBlock;
         }
 
-        public static Mesh GetSubChunkMesh(SubChunkData subChunkData)
+        public static Mesh GetMeshData(this BaseData subChunkData)
         {
             var mesh = new Mesh()
             {
