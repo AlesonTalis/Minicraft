@@ -31,7 +31,7 @@ namespace Assets.Scripts.CE
             setings.biomeSettings = biomeSettings;
 
 
-            GUIUtility.systemCopyBuffer = JsonConvert.SerializeObject(setings);
+            //GUIUtility.systemCopyBuffer = JsonConvert.SerializeObject(setings);
 
             return setings;
         }
@@ -53,7 +53,7 @@ namespace Assets.Scripts.CE
                 octaves = rnd.Next(octavesMin, octavesMax),
                 persistance = (float)(rnd.NextDouble() * persistance) + (persistance * 0.333f),
                 lacunarity = (float)(rnd.NextDouble() * lacunarity) + 1f,
-                power = (float)(rnd.NextDouble() * power) + 1f,
+                power = (float)(rnd.NextDouble() * power) + (power * 0.333f),
                 intensity = (float)(rnd.NextDouble() * intensity) + (intensity * 0.333f),
             };
         }

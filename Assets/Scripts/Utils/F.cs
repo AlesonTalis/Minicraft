@@ -12,6 +12,9 @@ namespace Assets.Scripts.Utils
 {
     public static class F
     {
+        private readonly static bool DEBUG_ENABLED = false;
+
+
         #region Custom Extensions
 
         public static BiomeSetting GetBiomeInRange(this BiomeSetting[] biomes, float height, float heat, float humidity)
@@ -22,10 +25,9 @@ namespace Assets.Scripts.Utils
                 bool checkTemperature = heat >= biomes[i].BiomeTemperatureRange.x && heat <= biomes[i].BiomeTemperatureRange.y;
                 bool checkHumidity = humidity >= biomes[i].BiomeHumidityRange.x && humidity <= biomes[i].BiomeHumidityRange.y;
 
-                //Debug.Log($"{height}, {heat}, {humidity} {checkHumidity}-{checkHeight}-{checkTemperature}");
-
                 if ((i == 0) || (checkHeight && checkTemperature && checkHumidity))
                 {
+                    biomes[i].index = i;// debug only
                     return biomes[i];
                 }
             }
@@ -155,7 +157,7 @@ namespace Assets.Scripts.Utils
 
             var intervalo = TimeSpan.FromTicks(DateTime.Now.Ticks - inicio.Ticks).TotalMilliseconds;
 
-            if (name is not null)
+            if (name is not null && DEBUG_ENABLED)
             {
                 Debug.Log($"3D_LOOP: \"{name}\" - {intervalo}ms");
             }
@@ -213,7 +215,7 @@ namespace Assets.Scripts.Utils
 
             var intervalo = TimeSpan.FromTicks(DateTime.Now.Ticks - inicio.Ticks).TotalMilliseconds;
 
-            if (name is not null)
+            if (name is not null && DEBUG_ENABLED)
             {
                 Debug.Log($"3D_LOOP: \"{name}\" - {intervalo}ms");
             }
@@ -266,7 +268,7 @@ namespace Assets.Scripts.Utils
 
             var intervalo = TimeSpan.FromTicks(DateTime.Now.Ticks - inicio.Ticks).TotalMilliseconds;
 
-            if (name is not null)
+            if (name is not null && DEBUG_ENABLED)
             {
                 Debug.Log($"3D_LOOP: \"{name}\" - {intervalo}ms");
             }
@@ -314,16 +316,21 @@ namespace Assets.Scripts.Utils
             int Y = array.GetLength(1) - 1;
             int Z = array.GetLength(2) - 1;
 
-            if (y < Y && array[x, y + 1, z] == array[x, y, z]) faces -= 1;
-            if (y > O && array[x, y - 1, z] == array[x, y, z]) faces -= 2;
+            if (y < Y && NotDifferents(array[x, y + 1, z], array[x, y, z])) faces -= 1;
+            if (y > O && NotDifferents(array[x, y - 1, z], array[x, y, z])) faces -= 2;
 
-            if (x < X && array[x + 1, y, z] == array[x, y, z]) faces -= 4;
-            if (x > O && array[x - 1, y, z] == array[x, y, z]) faces -= 8;
+            if (x < X && NotDifferents(array[x + 1, y, z], array[x, y, z])) faces -= 4;
+            if (x > O && NotDifferents(array[x - 1, y, z], array[x, y, z])) faces -= 8;
 
-            if (z < Z && array[x, y, z + 1] == array[x, y, z]) faces -= 16;
-            if (z > O && array[x, y, z - 1] == array[x, y, z]) faces -= 32;
+            if (z < Z && NotDifferents(array[x, y, z + 1], array[x, y, z])) faces -= 16;
+            if (z > O && NotDifferents(array[x, y, z - 1], array[x, y, z])) faces -= 32;
 
             return faces;
+        }
+
+        public static bool NotDifferents(ushort a, ushort b, bool checkType = true)
+        {
+            return a == b || (a & 1024) == (b & 1024);// 0100 0000 0000 0000 - transparency
         }
 
         public static int CalcIndex(int SIZE, int x, int y, int z) => y * z * SIZE + x;

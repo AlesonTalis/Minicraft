@@ -9,6 +9,7 @@ namespace Assets.Scripts.Gen
     public static class Chunk
     {
         public const int CHUNK_SUBCHUNKS_STACK_HEIGHT = 8;
+        public const ushort AIR_BLOCK = 1024 + 32768 + 1;
 
 
         public static SubChunkData[] SetFilledChunk(ushort blockId, bool striped = false)
@@ -38,14 +39,14 @@ namespace Assets.Scripts.Gen
 
             chunkData.heightMapData.Loop((l) =>
             {
-                int height = (int)Mathf.Floor(chunkData.heightMapData[l.x, l.y] * (SubChunk.CHUNK_SIZE * CHUNK_SUBCHUNKS_STACK_HEIGHT));
+                int height = (int)Mathf.Floor((chunkData.heightMapData[l.x, l.y]) * (SubChunk.CHUNK_SIZE * CHUNK_SUBCHUNKS_STACK_HEIGHT));
 
                 for (int i = 0; i < CHUNK_SUBCHUNKS_STACK_HEIGHT; i++)
                 {
                     int chunkHieght = height - (i * SubChunk.CHUNK_SIZE);
                     ushort biomeBlock = (ushort)chunkData.biomeMapData[l.x, l.y];
 
-                    chunkData.subChunks[i].FillColumn(l.x, l.y, chunkHieght, 129, biomeBlock);
+                    chunkData.subChunks[i].FillColumn(l.x, l.y, chunkHieght, AIR_BLOCK, biomeBlock);
                 }
 
                 return null;

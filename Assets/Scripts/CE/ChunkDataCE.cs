@@ -1,6 +1,7 @@
 ﻿using Assets.Scripts.Gen;
 using Assets.Scripts.Model;
 using Assets.Scripts.Noise;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,11 +30,15 @@ namespace Assets.Scripts.CE
             int[,] biomeMapData = MapGen.GenerateBiomeMap(heightMapData, heatMapData, humidityMapData, settings.biomeSettings);
 
             chunk.SetMapData(heightMapData, heatMapData, humidityMapData, biomeMapData);
+
             
             chunk.chunkUID = Guid.NewGuid().ToString();
             chunk.SetPosition(chunkPosition);
 
             chunk.SetChunkDataHeightMap();
+
+            if (debug) chunk.debugData = JsonConvert.SerializeObject(chunk);
+            
             chunk.GetChunkData();
         }
     }

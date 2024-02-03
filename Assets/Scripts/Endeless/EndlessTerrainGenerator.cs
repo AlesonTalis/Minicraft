@@ -58,7 +58,7 @@ namespace Assets.Scripts.Endless
             dad.transform.position = chunkData.GetPosition();
             dad.transform.parent = transform;
 
-            //GUIUtility.systemCopyBuffer = JsonConvert.SerializeObject(chunkData.heightMapData);
+            //GUIUtility.systemCopyBuffer = chunkData.debugData;// debug only
 
             for (int i = 0; i < chunkData.subChunks.Length; i++)
             {
@@ -137,7 +137,7 @@ namespace Assets.Scripts.Endless
 
                 var end = TimeSpan.FromTicks(DateTime.Now.Ticks - init.Ticks).TotalMilliseconds;
 
-                Debug.Log($"CHUNK_{chunkPosition} duration: {end}ms");
+                //Debug.Log($"CHUNK_{chunkPosition} duration: {end}ms");// salvar em outro LOG
 
                 Thread.Sleep(m_ThreadSleepMiliseconds);
             }
@@ -156,7 +156,7 @@ namespace Assets.Scripts.Endless
         {
             ChunkData chunkData = new ChunkData();
 
-            chunkData.GenerateChunkData(chunkPosition * SubChunk.CHUNK_SIZE, worldSettings, true);
+            chunkData.GenerateChunkData(chunkPosition * SubChunk.CHUNK_SIZE, worldSettings);
 
             chunkDataGenerateQueue.Enqueue(chunkData);
         }

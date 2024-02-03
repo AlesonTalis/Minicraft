@@ -9,6 +9,8 @@ namespace Assets.Scripts.Gen
     {
         const float SMALL_NUMBER = 0.001f;
         const int LARGE_NUMBER = 100000;
+        const float HOLE_PREVENTER_MULTIPLIER = 0.75f;
+        const float HOLE_PREVENTER_MIN_VALUE = 0.15f;
 
         public static SeedValues GenerateSeeds(int globalSeed)
         {
@@ -26,7 +28,8 @@ namespace Assets.Scripts.Gen
         {
             var heightMap = Generate2dFloat(size, offset, settings, (value) =>
             {
-                //value = settings.multiplier.Evaluate(value);
+                value *= value * HOLE_PREVENTER_MULTIPLIER;
+                value += HOLE_PREVENTER_MIN_VALUE;
 
                 return value;
             });
@@ -72,7 +75,8 @@ namespace Assets.Scripts.Gen
 
                 var biome = biomes.GetBiomeInRange(height, heat, humidity);
 
-                value = biome.Id;
+                // index para debug
+                value = biome.index;// biome.Id;
 
                 return value;
             });
@@ -96,8 +100,6 @@ namespace Assets.Scripts.Gen
 
                 octavesOffset[i] = new Vector2(x, y);
             }
-
-            Debug.Log(string.Join(", ", octavesOffset));
 
             map.Loop((l) => {
                 float value = 0;

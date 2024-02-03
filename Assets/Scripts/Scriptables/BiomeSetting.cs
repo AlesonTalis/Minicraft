@@ -7,6 +7,8 @@ namespace Assets.Scripts.Scriptables
     [System.Serializable]
     public class BiomeSetting
     {
+        internal int index;
+
         public string? FileName { get; set; }
 
         [SerializeField]

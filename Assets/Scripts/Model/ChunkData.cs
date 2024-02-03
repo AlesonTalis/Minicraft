@@ -20,5 +20,8 @@ namespace Assets.Scripts.Model
         public float[,] detailsMapData { get; set; }
 
         public int[,] biomeMapData { get; set; }
+
+
+        public string debugData;
     }
 }

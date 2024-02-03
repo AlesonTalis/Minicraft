@@ -6,6 +6,6 @@ namespace Assets.Scripts.Model
     {
         public int SubchunkId;
         
-        public ushort[,,] BlockArray;
+        public ushort[,,] BlockArray { get; set; }
     }
 }
