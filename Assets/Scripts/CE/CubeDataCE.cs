@@ -6,9 +6,9 @@ namespace Assets.Scripts.CE
 {
     internal static class CubeDataCE
     {
-        internal static CubeData Init(this CubeData cube)
+        internal static BaseData Init(this BaseData cube)
         {
-            cube = new CubeData
+            cube = new BaseData
             {
                 Triangles = new int[0],
                 Vertices = new Vector3[0],
@@ -18,7 +18,7 @@ namespace Assets.Scripts.CE
             return cube;
         }
 
-        internal static CubeData Add(this CubeData cube, CubeFaceData face, Vector3 offset = default)
+        internal static void Add(this BaseData cube, BaseData face, Vector3 offset = default)
         {
             var triangles = new int[cube.Triangles.Length + face.Triangles.Length];
             var vertices = new Vector3[cube.Vertices.Length + face.Vertices.Length];
@@ -50,10 +50,10 @@ namespace Assets.Scripts.CE
             cube.Triangles = triangles;
             cube.Vertices = vertices;
 
-            return cube;
+            //return cube;
         }
 
-        internal static CubeData AddList(this CubeData cube, CubeFaceData face, Vector3 offset = default)
+        internal static BaseData AddList(this BaseData cube, BaseData face, Vector3 offset = default)
         {
             int vertices = cube.VerticesList.Count;
 
@@ -70,7 +70,7 @@ namespace Assets.Scripts.CE
             return cube;
         }
 
-        internal static CubeData AddListFromArray(this CubeData cube, CubeFaceData face, Vector3 offset = default)
+        internal static BaseData AddListFromArray(this BaseData cube, BaseData face, Vector3 offset = default)
         {
             int vertices = cube.VerticesList.Count;
 

@@ -43,7 +43,7 @@ namespace Assets.Scripts.Gen
 
             SubChunkData subChunkData = new SubChunkData()
             {
-                blockArray = chunkArray,
+                BlockArray = chunkArray,
             };
 
             return subChunkData;
@@ -67,11 +67,11 @@ namespace Assets.Scripts.Gen
         // cubos:
         public static SubChunkData GetSubChunkData(SubChunkData subChunkData)
         {
-            subChunkData.blockArray.Loop((l) =>
+            subChunkData.BlockArray.Loop((l) =>
             {
-                var blockid = subChunkData.blockArray[l.x,l.y,l.z];
+                var blockid = subChunkData.BlockArray[l.x,l.y,l.z];
 
-                var vizinhos = subChunkData.blockArray.GetNeighbors(l.x, l.y, l.z);
+                var vizinhos = subChunkData.BlockArray.GetNeighbors(l.x, l.y, l.z);
 
                 if ((blockid & 128) == 0)
                 {
@@ -89,11 +89,11 @@ namespace Assets.Scripts.Gen
         public static bool CheckHasNonFullBlock(SubChunkData subChunkData)
         {
             bool hasNonFullBlock = false;
-            ushort last = subChunkData.blockArray[0,0,0];
+            ushort last = subChunkData.BlockArray[0,0,0];
 
-            subChunkData.blockArray.Loop((l) =>
+            subChunkData.BlockArray.Loop((l) =>
             { 
-                if (last != subChunkData.blockArray[l.x,l.y,l.z])
+                if (last != subChunkData.BlockArray[l.x,l.y,l.z])
                 {
                     hasNonFullBlock = true;
 

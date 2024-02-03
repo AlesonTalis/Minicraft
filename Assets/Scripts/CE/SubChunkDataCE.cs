@@ -16,21 +16,21 @@ namespace Assets.Scripts.CE
 
         public static void FillColumn(this SubChunkData subChunk, int x, int z, int heightLimit, ushort blockTop, ushort blockBottom)
         {
-            int height = subChunk.blockArray.GetLength(1);
+            int height = subChunk.BlockArray.GetLength(1);
 
             for (int i = 0; i < height; i++)
             {
                 if (i <= heightLimit)
                 {
-                    subChunk.blockArray[x, i, z] = blockBottom;
+                    subChunk.BlockArray[x, i, z] = blockBottom;
                 }
                 else
                 {
-                    subChunk.blockArray[x, i, z] = blockTop;
+                    subChunk.BlockArray[x, i, z] = blockTop;
                 }
             }
         }
 
-        public static Vector3 GetPos(this SubChunkData subchunk) => new (subchunk.chunkPosX, subchunk.chunkPosY, subchunk.chunkPosZ);
+        public static Vector3 GetPos(this SubChunkData subchunk) => new (subchunk.PosX, subchunk.PosY, subchunk.PosZ);
     }
 }

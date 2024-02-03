@@ -101,12 +101,12 @@ namespace Assets.Scripts.Gen
         {
             var cube = new CubeData();
 
-            if ((faces & 1) != 0) cube = cube.Add(CUBE_FACE_TOP);
-            if ((faces & 2) != 0) cube = cube.Add(CUBE_FACE_BOTTOM);
-            if ((faces & 4) != 0) cube = cube.Add(CUBE_FACE_RIGHT);
-            if ((faces & 8) != 0) cube = cube.Add(CUBE_FACE_LEFT);
-            if ((faces & 16) != 0) cube = cube.Add(CUBE_FACE_FORWARD);
-            if ((faces & 32) != 0) cube = cube.Add(CUBE_FACE_BACK);
+            if ((faces & 1) != 0) cube.Add(CUBE_FACE_TOP);
+            if ((faces & 2) != 0) cube.Add(CUBE_FACE_BOTTOM);
+            if ((faces & 4) != 0) cube.Add(CUBE_FACE_RIGHT);
+            if ((faces & 8) != 0) cube.Add(CUBE_FACE_LEFT);
+            if ((faces & 16) != 0) cube.Add(CUBE_FACE_FORWARD);
+            if ((faces & 32) != 0) cube.Add(CUBE_FACE_BACK);
 
             return cube;
         }

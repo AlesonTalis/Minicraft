@@ -1,6 +1,7 @@
 ﻿using Assets.Scripts.CE;
 using Assets.Scripts.Model;
 using Assets.Scripts.Utils;
+using Newtonsoft.Json;
 using UnityEngine;
 
 namespace Assets.Scripts.Gen
@@ -43,6 +44,8 @@ namespace Assets.Scripts.Gen
                 return null;
             }, "ConvertHeightMapToChunkData");
 
+            //Debug.Log(JsonConvert.SerializeObject(chunkData));
+
             return chunkData;
         }
 
@@ -65,6 +68,7 @@ namespace Assets.Scripts.Gen
             for (int i = 0; i < chunkData.subChunks.Length; i++)
             {
                 var subChunkData = SubChunk.GetSubChunkData(chunkData.subChunks[i]);
+                subChunkData.PosY = SubChunk.CHUNK_SIZE * i;
 
                 chunkData.AddList(subChunkData, new Vector3(0, i * SubChunk.CHUNK_SIZE, 0));
             }

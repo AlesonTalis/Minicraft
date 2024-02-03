@@ -24,9 +24,9 @@ namespace Assets.Scripts.Noise
                 // (h + 1) * 0.5
                 float noise = noiseGen.GetPerlin(x,y);
 
-                heightMap[l.x, l.y] = (noise + 1) * 0.5f;
+                var value = (noise + 1) * 0.5f;
 
-                return null;
+                return value;
             }, "GenerateHeightMap");
 
             return heightMap;

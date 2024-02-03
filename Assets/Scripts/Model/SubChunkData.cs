@@ -2,12 +2,10 @@
 
 namespace Assets.Scripts.Model
 {
-    public class SubChunkData : CubeData 
+    public class SubChunkData : BaseData
     {
-        public int subchunkId;
+        public int SubchunkId;
         
-        public int chunkPosX, chunkPosY, chunkPosZ;
-
-        public ushort[,,] blockArray;
+        public ushort[,,] BlockArray;
     }
 }

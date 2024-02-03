@@ -6,12 +6,9 @@ using System.Threading.Tasks;
 
 namespace Assets.Scripts.Model
 {
-    public class ChunkData : BaseData
+    internal class RegionData : BaseData
     {
-        public SubChunkData[] subChunks;
+        public string regionId { get; set; }
 
-        public int chunkId { get; set; }
-
-        public string chunkUID { get; set; }
     }
 }

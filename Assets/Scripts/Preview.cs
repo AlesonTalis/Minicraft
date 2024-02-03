@@ -123,7 +123,7 @@ namespace Assets.Scripts
 
         void GenerateSubChunk()
         {
-            var subchunkBlockArray = SubChunk.SetFilledSubChunk(1);
+            var subchunkBlockArray = SubChunk.SetFilledSubChunk(1,true);
             var subchunk = SubChunk.GetSubChunkData(subchunkBlockArray);
             var mesh = SubChunk.GetSubChunkMesh(subchunk);
 
@@ -136,7 +136,8 @@ namespace Assets.Scripts
         void GenerateChunk()
         {
             var heightMap = HeightmapNoise.GenerateHeightMap();
-            var chunk = Chunk.SetChunkDataHeightMap(heightMap);
+            var subChunks = Chunk.SetChunkDataHeightMap(heightMap);
+            var chunk = Chunk.GetChunkData(subChunks);
 
             ClearObjects(chunkPreview.transform);
 
@@ -156,8 +157,8 @@ namespace Assets.Scripts
                 filter.sharedMesh = mesh;
                 renderer.sharedMaterial = defaultMaterial;
 
-                Debug.Log(string.Join(", ", chunk.subChunks[i].TrianglesList));
-                Debug.Log(string.Join(", ", chunk.subChunks[i].VerticesList));
+                //Debug.Log(string.Join(", ", chunk.subChunks[i].TrianglesList));
+                //Debug.Log(string.Join(", ", chunk.subChunks[i].VerticesList));
             }
 
             //Debug.Log(string.Join(", ", chunk.TrianglesList));
