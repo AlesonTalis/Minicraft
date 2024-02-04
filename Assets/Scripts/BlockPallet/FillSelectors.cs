@@ -71,5 +71,7 @@ public class FillSelectors : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         var pos = GetPositionInsideImageNormalized();
 
         Debug.Log(pos);
+
+        EditorBlocoPallet.SelectBlockFaceIndex(pos.x, pos.y);
     }
 }

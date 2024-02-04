@@ -49,6 +49,24 @@ namespace Assets.Scripts.Utils
 
         #endregion
 
+        #region Numbers
+
+        public static int ToInt<T>(this T value, int defValue = default)
+        {
+            try
+            {
+                var res = Convert.ToInt32(value);
+
+                return res;
+            }
+            catch
+            {
+                return defValue;
+            }
+        }
+
+        #endregion
+
         #region LOOPS
 
         public static bool Loop<T>(this T[] _, int SIZE, ref int i)
