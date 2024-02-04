@@ -78,26 +78,27 @@ namespace Assets.Scripts.CE
         {
             int y = pos.y;
             int x = pos.x;
+            var newUvs = new Vector2[uvBase.Length];
 
             for (int i = 0; i < uvBase.Length; i++)
             {
                 if (uvBase[i].x == 1)
                 {
-                    uvBase[i].x = HORIZONTAL_OFFSET;
+                    newUvs[i].x = HORIZONTAL_OFFSET;
                 }
                 if (uvBase[i].y == 1)
                 {
-                    uvBase[i].y = VERTICAL_OFFSET;
+                    newUvs[i].y = VERTICAL_OFFSET;
                 }
 
-                uvBase[i].x += HORIZONTAL_OFFSET * x;
-                uvBase[i].y += VERTICAL_OFFSET * y;
+                newUvs[i].x += HORIZONTAL_OFFSET * x;
+                newUvs[i].y += VERTICAL_OFFSET * y;
 
                 //uvBase[i].x += OFF_X * 0.5f;
                 //uvBase[i].y += OFF_Y * 0.5f;
             }
 
-            return uvBase;
+            return newUvs;
         }
 
         internal static BaseData AddList(this BaseData cube, BaseData face, Vector3 offset = default)
@@ -136,7 +137,7 @@ namespace Assets.Scripts.CE
                 cube.VerticesList.Add(face.Vertices[i] + offset);
             }
 
-            for (int i = 0; i < face.UvsList.Count; i++)
+            for (int i = 0; i < face.Uvs.Length; i++)
             {
                 cube.UvsList.Add(face.Uvs[i]);
             }

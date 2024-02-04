@@ -75,7 +75,7 @@ namespace Assets.Scripts.Gen
 
                 var cube = Cube.GenerateCube(vizinhos, blockid);
 
-                subChunkData = subChunkData.Add(cube, l.x - 1, l.y - 1, l.z - 1);// pode ser vazio
+                subChunkData.Add(cube, l.x - 1, l.y - 1, l.z - 1);// pode ser vazio
 
                 return null;
             }, "ConvertToVerticeData", new LoopSettings { ignoreBorders = true });
@@ -109,6 +109,7 @@ namespace Assets.Scripts.Gen
             {
                 vertices = subChunkData.VerticesList.ToArray(),
                 triangles = subChunkData.TrianglesList.ToArray(),
+                uv = subChunkData.UvsList.ToArray(),
             };
 
             mesh.RecalculateBounds();

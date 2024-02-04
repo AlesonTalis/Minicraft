@@ -6,12 +6,10 @@ namespace Assets.Scripts.CE
 {
     public static class SubChunkDataCE
     {
-        public static SubChunkData Add(this SubChunkData data, CubeData cube, int x, int y, int z)
+        public static void Add(this SubChunkData data, BaseData cube, int x, int y, int z)
         {
             Vector3 offset = new (x, y, z);
-            data = data.AddListFromArray(cube, offset) as SubChunkData;
-
-            return data;
+            data.AddListFromArray(cube, offset);
         }
 
         public static void FillColumn(this SubChunkData subChunk, int x, int z, int heightLimit, ushort blockTop, ushort blockBottom)

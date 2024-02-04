@@ -130,7 +130,7 @@ namespace Assets.Scripts.Gen
         public static CubeData GenerateCube(int faces = 63, ushort blockId = 1)
         {
             var cube = new CubeData();
-            var faceId = new Vector2Int(11, 31);
+            var faceId = new Vector2Int(3, 6);
 
             if ((faces & 1) != 0) cube.Add(CUBE_FACE_TOP, default, faceId);
             if ((faces & 2) != 0) cube.Add(CUBE_FACE_BOTTOM, default, faceId);
