@@ -22,6 +22,11 @@ namespace Assets.Scripts.Gen
                 new Vector3(0, 1, 0), new Vector3(0, 1, 1),
                 new Vector3(1, 1, 0), new Vector3(1, 1, 1),
             },
+            Uvs = new[]
+            {
+                new Vector2(0,0), new Vector2(0,1),
+                new Vector2(1,0), new Vector2(1,1),
+            },
         };
         static readonly CubeFaceData CUBE_FACE_BOTTOM = new()
         {
@@ -34,6 +39,11 @@ namespace Assets.Scripts.Gen
             {
                 new Vector3(0, 0, 0), new Vector3(0, 0, 1),
                 new Vector3(1, 0, 0), new Vector3(1, 0, 1),
+            },
+            Uvs = new[]
+            {
+                new Vector2(0,0), new Vector2(0,1),
+                new Vector2(1,0), new Vector2(1,1),
             },
         };
         static readonly CubeFaceData CUBE_FACE_RIGHT = new()
@@ -48,6 +58,11 @@ namespace Assets.Scripts.Gen
                 new Vector3(1, 1, 0), new Vector3(1, 1, 1),
                 new Vector3(1, 0, 0), new Vector3(1, 0, 1),
             },
+            Uvs = new[]
+            {
+                new Vector2(1,0), new Vector2(1,1),
+                new Vector2(0,0), new Vector2(0,1),
+            },
         };
         static readonly CubeFaceData CUBE_FACE_LEFT = new()
         {
@@ -60,6 +75,11 @@ namespace Assets.Scripts.Gen
             {
                 new Vector3(0, 1, 0), new Vector3(0, 1, 1),
                 new Vector3(0, 0, 0), new Vector3(0, 0, 1),
+            },
+            Uvs = new[]
+            {
+                new Vector2(1,0), new Vector2(1,1),
+                new Vector2(0,0), new Vector2(0,1),
             },
         };
         static readonly CubeFaceData CUBE_FACE_FORWARD = new()
@@ -74,6 +94,11 @@ namespace Assets.Scripts.Gen
                 new Vector3(0, 1, 1), new Vector3(1, 1, 1),
                 new Vector3(0, 0, 1), new Vector3(1, 0, 1),
             },
+            Uvs = new[]
+            {
+                new Vector2(0,1), new Vector2(1,1),
+                new Vector2(0,0), new Vector2(1,0),
+            },
         };
         static readonly CubeFaceData CUBE_FACE_BACK = new()
         {
@@ -87,6 +112,11 @@ namespace Assets.Scripts.Gen
                 new Vector3(0, 1, 0), new Vector3(1, 1, 0),
                 new Vector3(0, 0, 0), new Vector3(1, 0, 0),
             },
+            Uvs = new[]
+            {
+                new Vector2(0,1), new Vector2(1,1),
+                new Vector2(0,0), new Vector2(1,0),
+            },
         };
 
         #endregion
@@ -97,16 +127,17 @@ namespace Assets.Scripts.Gen
         /// <param name="faces"></param>
         /// <returns></returns>
         /// ^1 TOP, ^2 BOTTOM, ^3 RIGHT, ^4 LEFT, ^5 FORWARD, ^6 BACK
-        public static CubeData GenerateCube(int faces = 63)
+        public static CubeData GenerateCube(int faces = 63, ushort blockId = 1)
         {
             var cube = new CubeData();
+            var faceId = new Vector2Int(11, 31);
 
-            if ((faces & 1) != 0) cube.Add(CUBE_FACE_TOP);
-            if ((faces & 2) != 0) cube.Add(CUBE_FACE_BOTTOM);
-            if ((faces & 4) != 0) cube.Add(CUBE_FACE_RIGHT);
-            if ((faces & 8) != 0) cube.Add(CUBE_FACE_LEFT);
-            if ((faces & 16) != 0) cube.Add(CUBE_FACE_FORWARD);
-            if ((faces & 32) != 0) cube.Add(CUBE_FACE_BACK);
+            if ((faces & 1) != 0) cube.Add(CUBE_FACE_TOP, default, faceId);
+            if ((faces & 2) != 0) cube.Add(CUBE_FACE_BOTTOM, default, faceId);
+            if ((faces & 4) != 0) cube.Add(CUBE_FACE_RIGHT, default, faceId);
+            if ((faces & 8) != 0) cube.Add(CUBE_FACE_LEFT, default, faceId);
+            if ((faces & 16) != 0) cube.Add(CUBE_FACE_FORWARD, default, faceId);
+            if ((faces & 32) != 0) cube.Add(CUBE_FACE_BACK, default, faceId);
 
             return cube;
         }
@@ -116,7 +147,8 @@ namespace Assets.Scripts.Gen
             var mesh = new Mesh
             {
                 vertices = cube.Vertices,
-                triangles = cube.Triangles
+                uv = cube.Uvs,
+                triangles = cube.Triangles,
             };
 
             mesh.RecalculateBounds();

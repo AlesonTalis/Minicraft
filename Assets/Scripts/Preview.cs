@@ -116,8 +116,6 @@ namespace Assets.Scripts
             var mesh = Cube.GenerateCubeMesh(cube);
 
             meshFilter.sharedMesh = mesh;
-
-            //Debug.Log(string.Join(", ", cube.Triangles));
         }
 
         #region <MESH>

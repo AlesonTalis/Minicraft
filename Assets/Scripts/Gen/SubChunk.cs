@@ -73,12 +73,9 @@ namespace Assets.Scripts.Gen
 
                 var vizinhos = subChunkData.BlockArray.GetNeighbors(l.x, l.y, l.z);
 
-                if ((blockid & 128) == 0)
-                {
-                    var cube = Cube.GenerateCube(vizinhos);
+                var cube = Cube.GenerateCube(vizinhos, blockid);
 
-                    subChunkData = subChunkData.Add(cube, l.x - 1, l.y - 1, l.z - 1);// pode ser vazio
-                }
+                subChunkData = subChunkData.Add(cube, l.x - 1, l.y - 1, l.z - 1);// pode ser vazio
 
                 return null;
             }, "ConvertToVerticeData", new LoopSettings { ignoreBorders = true });
