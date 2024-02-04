@@ -330,7 +330,9 @@ namespace Assets.Scripts.Utils
 
         public static bool NotDifferents(ushort a, ushort b, bool checkType = true)
         {
-            return a == b || (a & 1024) == (b & 1024);// 0100 0000 0000 0000 - transparency
+            return a == b ||
+                (a != b && (a & 1024) == 0);// ||
+                //(a & 1024) == (b & 1024);// 0100 0000 0000 0000 - transparency
         }
 
         public static int CalcIndex(int SIZE, int x, int y, int z) => y * z * SIZE + x;

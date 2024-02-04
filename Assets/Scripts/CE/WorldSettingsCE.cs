@@ -14,7 +14,7 @@ namespace Assets.Scripts.CE
 {
     public static class WorldSettingsCE
     {
-        public static WorldSettings Init(string seed, BiomeSetting[] biomeSettings)
+        public static WorldSettings Init(string seed, BiomeSetting[] biomeSettings, float globalScale = 5f)
         {
             System.Random rnd = new (seed.GetHashCode());
 
@@ -23,11 +23,9 @@ namespace Assets.Scripts.CE
                 globalSeed = seed,
             };
 
-            float scaleMultiplier = 5f;
-
-            setings.heightMapSettings = GenerateMapSettings(rnd.Next(), scaleMultiplier * 250f, 3,5, 0.65f, 5f, 1.5f, 0.9f);
-            setings.heatMapSettings = GenerateMapSettings(rnd.Next(), scaleMultiplier * 300f);
-            setings.humiditySettings = GenerateMapSettings(rnd.Next(), scaleMultiplier * 200f);
+            setings.heightMapSettings = GenerateMapSettings(rnd.Next(), globalScale * 250f, 3,5, 0.65f, 5f, 1.5f, 0.9f);
+            setings.heatMapSettings = GenerateMapSettings(rnd.Next(), globalScale * 300f);
+            setings.humiditySettings = GenerateMapSettings(rnd.Next(), globalScale * 200f);
             setings.biomeSettings = biomeSettings;
 
 

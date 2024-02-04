@@ -23,6 +23,9 @@ namespace Assets.Scripts.Endless
         private int m_ThreadSleepMiliseconds = 200;
 
         [SerializeField]
+        private float m_GlobalScale = 1f;
+
+        [SerializeField]
         private Material m_TerrainMaterial;
         [SerializeField]
         private TextAsset m_BiomesSettings;
@@ -43,7 +46,7 @@ namespace Assets.Scripts.Endless
         {
             LoadBiomeSettings();
 
-            worldSettings = WorldSettingsCE.Init(seed, biomeSettings);
+            worldSettings = WorldSettingsCE.Init(seed, biomeSettings, m_GlobalScale);
 
             ThreadInit();
         }
