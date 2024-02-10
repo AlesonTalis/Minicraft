@@ -12,6 +12,7 @@ namespace Assets.Scripts.Gen
         #region LOOKUP TABLE FACES
 
         // LOOKUP TABLE CUBE
+        // TODO: uv index
         static readonly CubeFaceData CUBE_FACE_TOP = new()
         {
             Triangles = new[]

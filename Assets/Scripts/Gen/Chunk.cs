@@ -46,7 +46,7 @@ namespace Assets.Scripts.Gen
                     int chunkHieght = height - (i * SubChunk.CHUNK_SIZE);
                     ushort biomeBlock = (ushort)chunkData.biomeMapData[l.x, l.y];
 
-                    chunkData.subChunks[i].FillColumn(l.x, l.y, chunkHieght, AIR_BLOCK, biomeBlock);
+                    chunkData.subChunks[i].FillColumn(l.x, l.y, chunkHieght, AIR_BLOCK, biomeBlock);// biome block rule
                 }
 
                 return null;

@@ -69,7 +69,7 @@ namespace Assets.Scripts.Gen
         {
             subChunkData.BlockArray.Loop((l) =>
             {
-                ushort blockid = 2;// subChunkData.BlockArray[l.x,l.y,l.z];
+                ushort blockid = subChunkData.BlockArray[l.x,l.y,l.z];
 
                 var vizinhos = subChunkData.BlockArray.GetNeighbors(l.x, l.y, l.z);
 
