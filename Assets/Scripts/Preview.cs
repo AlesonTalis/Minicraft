@@ -14,6 +14,8 @@ using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using Assets.Scripts.Model;
+using Assets.Scripts.Concurents;
+using UnityEditor.Rendering;
 
 namespace Assets.Scripts
 {
@@ -23,6 +25,7 @@ namespace Assets.Scripts
         public GenType genType;
         public PreviewType previewType;
         public ModeType mode;
+        public ushort blockId = 3;
 
 
         [Header("Settings")]
@@ -41,6 +44,8 @@ namespace Assets.Scripts
         };
         [ReadOnly]
         public BiomeSetting[] biomes;
+        [ReadOnly]
+        public ItemSettings[] items;
 
 
         [Header("Preview")]
@@ -57,6 +62,7 @@ namespace Assets.Scripts
         public void Generate()
         {
             Debug.Log("Generating...");
+            FillItemSettingsDictionary();
 
             if (mode == ModeType.Mesh)
             {
@@ -109,16 +115,33 @@ namespace Assets.Scripts
             var file = File.ReadAllText(path);
             this.biomes = JsonConvert.DeserializeObject<BiomeSetting[]>(file);
         }
+        
+        public void LoadBlocksFolder(string path)
+        {
+            Debug.Log(path);
+            var file = File.ReadAllText(path);
+            this.items = JsonConvert.DeserializeObject<ItemSettings[]>(file);
+        }
+
+        void FillItemSettingsDictionary()
+        {
+            ItemsSettingsDictionary.items.Clear();
+
+            for (int i = 0; i < items.Length; i++)
+            {
+                ItemsSettingsDictionary.items.TryAdd(items[i].itemId.ToString(), items[i]);
+            }
+        }
+
+        #region <MESH>
 
         void GenerateCube()
         {
-            var cube = Cube.GenerateCube();
+            var cube = Cube.GenerateCube(63,blockId);
             var mesh = Cube.GenerateCubeMesh(cube);
 
             meshFilter.sharedMesh = mesh;
         }
-
-        #region <MESH>
 
         void GenerateSubChunk()
         {

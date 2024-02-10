@@ -63,8 +63,8 @@ namespace Assets.Scripts.Gen
             },
             Uvs = new[]
             {
-                new Vector2(1,1), new Vector2(0,1),// 0 1 // 10 11
-                new Vector2(1,0), new Vector2(0,0),// 2 3 // 00 01
+                new Vector2(0,0), new Vector2(1,0),// 0 1 // 10 11 // 11 01
+                new Vector2(0,1), new Vector2(1,1),// 2 3 // 00 01 // 10 00
             },
         };
         static readonly CubeFaceData CUBE_FACE_LEFT = new()
@@ -81,8 +81,8 @@ namespace Assets.Scripts.Gen
             },
             Uvs = new[]
             {
-                new Vector2(1,1), new Vector2(0,1),// 0 1 // 10 11
-                new Vector2(1,0), new Vector2(0,0),// 2 3 // 00 01
+                new Vector2(0,0), new Vector2(1,0),// 0 1 // 10 11
+                new Vector2(0,1), new Vector2(1,1),// 2 3 // 00 01
             },
         };
         static readonly CubeFaceData CUBE_FACE_FORWARD = new()
@@ -99,8 +99,8 @@ namespace Assets.Scripts.Gen
             },
             Uvs = new[]
             {
-                new Vector2(0,1), new Vector2(1,1),
-                new Vector2(0,0), new Vector2(1,0),
+                new Vector2(0,0), new Vector2(1,0),// 0 1 // 10 11
+                new Vector2(0,1), new Vector2(1,1),// 2 3 // 00 01
             },
         };
         static readonly CubeFaceData CUBE_FACE_BACK = new()
@@ -117,8 +117,8 @@ namespace Assets.Scripts.Gen
             },
             Uvs = new[]
             {
-                new Vector2(0,1), new Vector2(1,1),
-                new Vector2(0,0), new Vector2(1,0),
+                new Vector2(0,0), new Vector2(1,0),// 0 1 // 10 11
+                new Vector2(0,1), new Vector2(1,1),// 2 3 // 00 01
             },
         };
 
@@ -133,7 +133,6 @@ namespace Assets.Scripts.Gen
         public static CubeData GenerateCube(int faces = 63, ushort blockId = 1, ushort biome = 0)
         {
             var cube = new CubeData();
-            var faceId = new Vector2Int(3, 6);
 
             if ((faces & 1) != 0) cube.Add(CUBE_FACE_TOP, default, GetFaceId(0,blockId,biome));
             if ((faces & 2) != 0) cube.Add(CUBE_FACE_BOTTOM, default, GetFaceId(1, blockId, biome));
@@ -145,11 +144,11 @@ namespace Assets.Scripts.Gen
             return cube;
         }
 
-        static Vector2Int GetFaceId(ushort faceId, ushort blockId, ushort biomeId)
+        static int GetFaceId(ushort faceId, ushort blockId, ushort biomeId)
         {
-            if (ItemsSettingsDictionary.items.TryGetValue($"{blockId}", out ItemSettings item) is false) return new Vector2Int(26, 6);
+            if (ItemsSettingsDictionary.items.TryGetValue($"{blockId}", out ItemSettings item) is false) return 0;
 
-            return item.itemImageFaces[faceId].GetVector2Int();
+            return item.GetFace(faceId);
         }
 
         public static Mesh GenerateCubeMesh(CubeData cube)

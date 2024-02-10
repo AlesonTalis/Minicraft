@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace Assets.Scripts.Gen
 {
+    [Serializable]
     public struct ItemSettings
     {
         public int itemIndex { get; set; }
@@ -17,7 +18,10 @@ namespace Assets.Scripts.Gen
 
         public ItemType itemType { get; set; }
 
+        [Obsolete]
         public V2I[] itemImageFaces { get; set; }// 6 items
+
+        public int[] itemFaces { get; set; }// 1,2,3,6
     }
 
     public enum ItemType

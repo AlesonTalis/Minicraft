@@ -26,5 +26,11 @@ public class PreviewEditor : Editor
             
             preview.LoadBiomesFolder(path);
         }
+        if (GUILayout.Button("Load Blocks Folder"))
+        {
+            string path = EditorUtility.OpenFilePanel("Load Blocks File", "", "blocks.json");
+            
+            preview.LoadBlocksFolder(path);
+        }
     }
 }
