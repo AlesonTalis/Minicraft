@@ -323,6 +323,7 @@ MonoBehaviour:
   m_GlobalScale: 5
   m_TerrainMaterial: {fileID: 2100000, guid: b0648fe90bbeb004a99bdcb7e1c1d11b, type: 2}
   m_BiomesSettings: {fileID: 4900000, guid: f071ac021aa881d439ed4d9fcd05f1b3, type: 3}
+  m_BlockPallet: {fileID: 4900000, guid: 4995b0ce55ad9bd4cacde358f62ddd86, type: 3}
   seed: 26041996
 --- !u!4 &267982473
 Transform:

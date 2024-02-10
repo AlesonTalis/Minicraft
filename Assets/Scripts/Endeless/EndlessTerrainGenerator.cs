@@ -30,30 +30,34 @@ namespace Assets.Scripts.Endless
         [SerializeField]
         private TextAsset m_BiomesSettings;
         [SerializeField]
+        private TextAsset m_BlockPallet;
+        [SerializeField]
         private string seed;
 
         private WorldSettings worldSettings;
 
-        private ConcurrentQueue<Vector2Int> chunksGenerateQueue = new ();
-        private ConcurrentQueue<ChunkData> chunkDataGenerateQueue = new ();
-        private ConcurrentDictionary<Vector2Int, RegionData> regionDataDictionary = new ();
+        private ConcurrentQueue<Vector2Int> chunksGenerateQueue = new();
+        private ConcurrentQueue<ChunkData> chunkDataGenerateQueue = new();
+        private ConcurrentDictionary<Vector2Int, RegionData> regionDataDictionary = new();
 
         private BiomeSetting[] biomeSettings;
+        private ItemSettings[] itemSettings;
 
         private bool runningThread = false;
 
         void Start()
         {
             LoadBiomeSettings();
+            LoadItemSettings();
 
-            worldSettings = WorldSettingsCE.Init(seed, biomeSettings, m_GlobalScale);
+            worldSettings = WorldSettingsCE.Init(seed, biomeSettings, itemSettings, m_GlobalScale);
 
             ThreadInit();
         }
 
         void LateUpdate()
         {
-            if (chunkDataGenerateQueue.TryDequeue (out ChunkData chunkData) == false) {
+            if (chunkDataGenerateQueue.TryDequeue(out ChunkData chunkData) == false) {
                 return;
             }
 
@@ -140,8 +144,6 @@ namespace Assets.Scripts.Endless
 
                 var end = TimeSpan.FromTicks(DateTime.Now.Ticks - init.Ticks).TotalMilliseconds;
 
-                //Debug.Log($"CHUNK_{chunkPosition} duration: {end}ms");// salvar em outro LOG
-
                 Thread.Sleep(m_ThreadSleepMiliseconds);
             }
 
@@ -153,6 +155,11 @@ namespace Assets.Scripts.Endless
         void LoadBiomeSettings()
         {
             biomeSettings = JsonConvert.DeserializeObject<BiomeSetting[]>(m_BiomesSettings.text);
+        }
+
+        void LoadItemSettings()
+        {
+            itemSettings = JsonConvert.DeserializeObject<ItemSettings[]>(m_BlockPallet.text);
         }
 
         void ChunkGenerationLogic(Vector2Int chunkPosition)

@@ -1,4 +1,5 @@
-﻿using Assets.Scripts.Gen;
+﻿using Assets.Scripts.Concurents;
+using Assets.Scripts.Gen;
 using Assets.Scripts.Model;
 using Assets.Scripts.Scriptables;
 using Newtonsoft.Json;
@@ -14,7 +15,7 @@ namespace Assets.Scripts.CE
 {
     public static class WorldSettingsCE
     {
-        public static WorldSettings Init(string seed, BiomeSetting[] biomeSettings, float globalScale = 5f)
+        public static WorldSettings Init(string seed, BiomeSetting[] biomeSettings, ItemSettings[] itemSettings, float globalScale = 5f)
         {
             System.Random rnd = new (seed.GetHashCode());
 
@@ -27,9 +28,12 @@ namespace Assets.Scripts.CE
             setings.heatMapSettings = GenerateMapSettings(rnd.Next(), globalScale * 300f);
             setings.humiditySettings = GenerateMapSettings(rnd.Next(), globalScale * 200f);
             setings.biomeSettings = biomeSettings;
+            setings.itemSettings = itemSettings;
 
-
-            //GUIUtility.systemCopyBuffer = JsonConvert.SerializeObject(setings);
+            for (int i = 0; i < itemSettings.Length; i++)
+            {
+                ItemsSettingsDictionary.items.TryAdd(itemSettings[i].itemId.ToString(), itemSettings[i]);
+            }
 
             return setings;
         }
