@@ -15,6 +15,9 @@ public class ImageSelectViewer : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI m_FaceDirection;
 
+    bool shift = false;
+    bool selected = false;
+
     private float imageWidth = 1024, imageHeight = 512;
 
     private void Start()
@@ -25,7 +28,11 @@ public class ImageSelectViewer : MonoBehaviour
     }
 
     void Update()
-    { }
+    {
+        shift = Input.GetKey(KeyCode.LeftShift);
+
+        selectBorder.gameObject.SetActive(shift || selected);
+    }
 
 
 
@@ -53,6 +60,7 @@ public class ImageSelectViewer : MonoBehaviour
     public void Select(bool select)
     {
         selectBorder.gameObject.SetActive(select);
+        selected = select;
     }
 
     public void Select(int indexX, int indexY)

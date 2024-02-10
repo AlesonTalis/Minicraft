@@ -3,8 +3,10 @@ using Assets.Scripts.Utils;
 using Newtonsoft.Json;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using TMPro;
+using UnityEditor;
 using UnityEngine;
 
 public class EditorBlocoPallet : MonoBehaviour
@@ -23,7 +25,7 @@ public class EditorBlocoPallet : MonoBehaviour
     [SerializeField]
     private TMP_InputField m_BlockId;
     [SerializeField]
-    private ImageSelectViewer[] m_ImageSelectViewer;
+    private List<ImageSelectViewer> m_ImageSelectViewer;
 
     [Space]
     [TextArea]
@@ -36,6 +38,9 @@ public class EditorBlocoPallet : MonoBehaviour
     ItemSettings itemEditing;
 
     List<ItemSettings> itemsSaved;
+    
+    private string pathToSavedBlocks;
+
 
 
 
@@ -63,7 +68,11 @@ public class EditorBlocoPallet : MonoBehaviour
         if (edit is false)
             itemsSaved.Add(JsonConvert.DeserializeObject<ItemSettings>(JsonConvert.SerializeObject(itemEditing)));// dumb...
 
+        itemsSaved = itemsSaved.OrderByDescending(x => x.itemId).ToList();
+
         CreateViewList();
+
+        //SaveBlocksFile();
     }
 
     public static void BlocoSelectEdit(int blockIndex)
@@ -86,13 +95,21 @@ public class EditorBlocoPallet : MonoBehaviour
         instance.SetBlockFace(face, indexX, indexY);
     }
 
-    public static void SelectBlockFaceIndex(int indexX, int indexY)
+    public static void SelectBlockFaceIndex(int indexX, int indexY, bool shift = false)
     {
         var face = instance.faceSelected?.faceDirection ?? FaceDirection.Top;
 
         instance.faceSelected.Select(indexX, indexY);
 
         BlocoFaceSetIndex(face, indexX, indexY);
+
+        if (shift)
+        {
+            instance.m_ImageSelectViewer.ForEach(f => {
+                f.Select(indexX, indexY);
+                BlocoFaceSetIndex(f.faceDirection, indexX, indexY);
+            });
+        }
     }
 
 
@@ -117,6 +134,13 @@ public class EditorBlocoPallet : MonoBehaviour
 
             ShowSelectedValues();
         }
+
+        Application.quitting += Application_quitting;
+    }
+
+    private void Application_quitting()
+    {
+        SaveBlocksFile();
     }
 
     void ClearBlockListView()
@@ -132,7 +156,7 @@ public class EditorBlocoPallet : MonoBehaviour
         m_BlockId.text = itemEditing.itemId.ToString();
         m_BlockName.text = itemEditing.itemName;
 
-        for (int i = 0; i < m_ImageSelectViewer.Length; i++)
+        for (int i = 0; i < m_ImageSelectViewer.Count; i++)
         {
             m_ImageSelectViewer[i].Select(itemEditing.itemImageFaces[i].x, itemEditing.itemImageFaces[i].y);
         }
@@ -140,8 +164,13 @@ public class EditorBlocoPallet : MonoBehaviour
 
     void LoadBlocks()
     {
+        var blockListSaved = PlayerPrefs.GetString("last_block_list");
+        if (blockListSaved is not null && blockListSaved is not "") m_SavedResult = File.ReadAllText(blockListSaved);
+
         itemsSaved = JsonConvert.DeserializeObject<List<ItemSettings>>(m_SavedResult);
         CreateViewList();
+
+        pathToSavedBlocks = PlayerPrefs.GetString("last_block_list");
     }
 
     private void CreateViewList()
@@ -161,6 +190,19 @@ public class EditorBlocoPallet : MonoBehaviour
         }
 
         m_SavedResult = JsonConvert.SerializeObject(itemsSaved);
+    }
+
+    void SaveBlocksFile()
+    {
+        var path = pathToSavedBlocks != "" && File.Exists(pathToSavedBlocks) ? pathToSavedBlocks : EditorUtility.SaveFilePanel("Salvar Lista de Blocos", "", "block_list", "blocks.json");
+        if (path is null || path is "") return;
+
+        var blocks = JsonConvert.SerializeObject(itemsSaved);
+        File.WriteAllText(path, blocks);
+
+        pathToSavedBlocks = path;
+
+        PlayerPrefs.SetString("last_block_list", path);
     }
 
 

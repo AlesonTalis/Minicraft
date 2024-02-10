@@ -15,6 +15,8 @@ public class FillSelectors : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     bool inside = false;
     Vector2 mousePos;
 
+    bool shift = false;
+
     void Start()
     {
 
@@ -24,6 +26,7 @@ public class FillSelectors : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     {
         box.gameObject.SetActive(inside);
 
+        shift = Input.GetKey(KeyCode.LeftShift);
         if (inside is false) return;
 
         Vector2 start = bottomLeft.position;
@@ -72,6 +75,6 @@ public class FillSelectors : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 
         Debug.Log(pos);
 
-        EditorBlocoPallet.SelectBlockFaceIndex(pos.x, pos.y);
+        EditorBlocoPallet.SelectBlockFaceIndex(pos.x, pos.y, shift);
     }
 }
