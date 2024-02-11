@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.CE;
+using Assets.Scripts.Concurents;
 using Assets.Scripts.Model;
 using Assets.Scripts.Utils;
 using Newtonsoft.Json;
@@ -35,7 +36,7 @@ namespace Assets.Scripts.Gen
 
         public static void SetChunkDataHeightMap(this ChunkData chunkData, float[,] heightMap = default)
         {
-            chunkData.subChunks = SetFilledChunk(1,true);
+            chunkData.subChunks = SetFilledChunk(1);
 
             chunkData.heightMapData.Loop((l) =>
             {
@@ -44,7 +45,7 @@ namespace Assets.Scripts.Gen
                 for (int i = 0; i < CHUNK_SUBCHUNKS_STACK_HEIGHT; i++)
                 {
                     int chunkHieght = height - (i * SubChunk.CHUNK_SIZE);
-                    ushort biomeBlock = (ushort)chunkData.biomeMapData[l.x, l.y];
+                    ushort biomeBlock = (ushort)(chunkData.biomeMapData[l.x,l.y] % BiomeSettingsDictionary.biomes.Count);// stone
 
                     chunkData.subChunks[i].FillColumn(l.x, l.y, chunkHieght, AIR_BLOCK, biomeBlock);// biome block rule
                 }

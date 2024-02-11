@@ -30,11 +30,6 @@ namespace Assets.Scripts.CE
             setings.biomeSettings = biomeSettings;
             setings.itemSettings = itemSettings;
 
-            for (int i = 0; i < itemSettings.Length; i++)
-            {
-                ItemsSettingsDictionary.items.TryAdd(itemSettings[i].itemId.ToString(), itemSettings[i]);
-            }
-
             return setings;
         }
 
@@ -48,7 +43,7 @@ namespace Assets.Scripts.CE
         {
             System.Random rnd = new (seed);
 
-            return new Gen.MapSettings
+            return new MapSettings
             {
                 seed = rnd.Next(),
                 scale = ((float)rnd.NextDouble() * scale) + (scale * 0.333f),

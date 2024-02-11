@@ -73,11 +73,20 @@
     },
     {
         "itemIndex": 0,
-        "itemId": 10,
-        "itemName": "grass",
+        "itemId": 9,
+        "itemName": "sand",
         "itemDescription": null,
         "itemType": 0,
         "itemImageFaces": [],
         "itemFaces": [11]
+    },
+    {
+        "itemIndex": 0,
+        "itemId": 10,
+        "itemName": "sandstone",
+        "itemDescription": null,
+        "itemType": 0,
+        "itemImageFaces": [],
+        "itemFaces": [12,14,13,13,13,13]
     }
 ]

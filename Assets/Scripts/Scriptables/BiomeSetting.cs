@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using GD.MinMaxSlider;
 using System;
+using System.Collections.Generic;
 
 namespace Assets.Scripts.Scriptables
 {
@@ -159,6 +160,12 @@ namespace Assets.Scripts.Scriptables
                 };
             }
         }
+
+        public Dictionary<ushort, int[]> SurfaceFiller { get; set; } = new Dictionary<ushort, int[]>()
+        {
+            { 4, new [] {1 } },
+            { 5, new [] {4,6 } }
+        };
 
 
         public void ApplyId()

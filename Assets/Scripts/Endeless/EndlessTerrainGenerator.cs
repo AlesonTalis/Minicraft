@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.CE;
+using Assets.Scripts.Concurents;
 using Assets.Scripts.Gen;
 using Assets.Scripts.Model;
 using Assets.Scripts.Scriptables;
@@ -34,6 +35,10 @@ namespace Assets.Scripts.Endless
         [SerializeField]
         private string seed;
 
+        [Space]
+        [SerializeField]
+        private bool debug = false;
+
         private WorldSettings worldSettings;
 
         private ConcurrentQueue<Vector2Int> chunksGenerateQueue = new();
@@ -65,7 +70,7 @@ namespace Assets.Scripts.Endless
             dad.transform.position = chunkData.GetPosition();
             dad.transform.parent = transform;
 
-            //GUIUtility.systemCopyBuffer = chunkData.debugData;// debug only
+            if (debug) GUIUtility.systemCopyBuffer = chunkData.debugData;// debug only
 
             for (int i = 0; i < chunkData.subChunks.Length; i++)
             {
@@ -155,18 +160,20 @@ namespace Assets.Scripts.Endless
         void LoadBiomeSettings()
         {
             biomeSettings = JsonConvert.DeserializeObject<BiomeSetting[]>(m_BiomesSettings.text);
+            biomeSettings.FillDictionary();
         }
 
         void LoadItemSettings()
         {
             itemSettings = JsonConvert.DeserializeObject<ItemSettings[]>(m_BlockPallet.text);
+            itemSettings.FillItemsDictionary();
         }
 
         void ChunkGenerationLogic(Vector2Int chunkPosition)
         {
             ChunkData chunkData = new ChunkData();
 
-            chunkData.GenerateChunkData(chunkPosition * SubChunk.CHUNK_SIZE, worldSettings);
+            chunkData.GenerateChunkData(chunkPosition * SubChunk.CHUNK_SIZE, worldSettings, debug);
 
             chunkDataGenerateQueue.Enqueue(chunkData);
         }

@@ -35,11 +35,30 @@ namespace Assets.Scripts.CE
             chunk.chunkUID = Guid.NewGuid().ToString();
             chunk.SetPosition(chunkPosition);
 
+            chunk.chunkSeed = ($"{chunkPosition.x}_{chunkPosition.y}_{settings.globalSeed}_{size}").GetHashCode();
+
             chunk.SetChunkDataHeightMap();
+
+            chunk.CreateDecoration();
 
             if (debug) chunk.debugData = JsonConvert.SerializeObject(chunk);
             
             chunk.GetChunkData();
+        }
+
+        public static void SetBlock(this ChunkData chunk, int x, int y, int z, ushort blockId)
+        {
+            int subChunkId = y / SubChunk.CHUNK_SIZE;
+            int subChunkY = y % SubChunk.CHUNK_SIZE;
+
+            try
+            {
+                chunk.subChunks[subChunkId].BlockArray[x, subChunkY, z] = blockId;
+            }
+            catch
+            {
+                Debug.Log($"{x}|{y}|{z}|{subChunkId}|{subChunkY}");
+            }
         }
     }
 }

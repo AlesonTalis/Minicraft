@@ -23,5 +23,7 @@ namespace Assets.Scripts.Model
 
 
         public string debugData;
+
+        public int chunkSeed { get; set; }
     }
 }
