@@ -146,7 +146,7 @@ namespace Assets.Scripts.Gen
 
         static int GetFaceId(ushort faceId, ushort blockId, ushort biomeId)
         {
-            if (ItemsSettingsDictionary.items.TryGetValue($"{blockId}", out ItemSettings item) is false) return 0;
+            if (ItemsSettingsDictionary.items.TryGetValue($"{blockId}", out ItemSettings item) is false) return 1;// bedrock
 
             return item.GetFace(faceId);
         }

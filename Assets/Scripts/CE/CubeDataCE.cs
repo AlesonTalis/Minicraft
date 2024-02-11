@@ -111,19 +111,16 @@ namespace Assets.Scripts.CE
                 vertices[v] = face.Vertices[v - cube.Vertices.Length] + offset;
             }
 
-            if (faceId != default)
+            var faceUvs = SetUvPosition(face.Uvs, faceId);
+
+            for (int v = 0; v < cube.Uvs.Length; v++)
             {
-                var faceUvs = SetUvPosition(face.Uvs, faceId);
+                uvs[v] = cube.Uvs[v];
+            }
 
-                for (int v = 0; v < cube.Uvs.Length; v++)
-                {
-                    uvs[v] = cube.Uvs[v];
-                }
-
-                for (int v = cube.Uvs.Length; v < face.Uvs.Length + cube.Uvs.Length; v++)
-                {
-                    uvs[v] = faceUvs[v - cube.Uvs.Length];
-                }
+            for (int v = cube.Uvs.Length; v < face.Uvs.Length + cube.Uvs.Length; v++)
+            {
+                uvs[v] = faceUvs[v - cube.Uvs.Length];
             }
 
             cube.Triangles = triangles;
@@ -159,6 +156,7 @@ namespace Assets.Scripts.CE
         internal static Vector2[] SetUvPosition(Vector2[] uvBase, int pos)
         {
             var newUvs = new Vector2[uvBase.Length];
+            //pos -= 1;
             int x = pos % HORIZONTAL_BLOCKS_COUNT;
             int y = pos / HORIZONTAL_BLOCKS_COUNT;
 
@@ -167,15 +165,15 @@ namespace Assets.Scripts.CE
                 newUvs[i].y = 1;
                 if (uvBase[i].x == 1)
                 {
-                    newUvs[i].x = HORIZONTAL_OFFSET;
+                    newUvs[i].x = HORIZONTAL_OFFSET;// 0.1
                 }
                 if (uvBase[i].y == 1)
                 {
-                    newUvs[i].y -= VERTICAL_OFFSET;
+                    newUvs[i].y -= VERTICAL_OFFSET;// 0.9
                 }
 
-                newUvs[i].x += HORIZONTAL_OFFSET * x;
-                newUvs[i].y -= VERTICAL_OFFSET * y;
+                newUvs[i].x += HORIZONTAL_OFFSET * x;// 0.1 * 0 = 0.1 || 0
+                newUvs[i].y -= VERTICAL_OFFSET * y;// 0.1 * 0 = 0.9 || 1
             }
 
             return newUvs;
