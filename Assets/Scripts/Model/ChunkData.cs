@@ -25,5 +25,17 @@ namespace Assets.Scripts.Model
         public string debugData;
 
         public int chunkSeed { get; set; }
+
+        public ChunkBufferData[] bufferData { get; set; }
+    }
+
+    public struct ChunkBufferData
+    {
+        public float[] heightMapData { get; set; }
+        public float[] heatMapData { get; set; }
+        public float[] humidityMapData { get; set; }
+        public float[] detailsMapData { get; set; }
+
+        public int[] biomeMapData { get; set; }
     }
 }

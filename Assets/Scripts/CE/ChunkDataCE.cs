@@ -23,11 +23,13 @@ namespace Assets.Scripts.CE
 
         public static void GenerateChunkData(this ChunkData chunk, Vector2Int chunkPosition, WorldSettings settings, bool debug = false)
         {
-            int size = SubChunk.CHUNK_SIZE + 2;
-            float[,] heightMapData = MapGen.GenerateHeightMap(size, chunkPosition, settings.heightMapSettings);
-            float[,] heatMapData = MapGen.GenerateHeatMap(size, chunkPosition, settings.heatMapSettings);
-            float[,] humidityMapData = MapGen.GenerateHumidityMap(size, chunkPosition, settings.humiditySettings);
-            int[,] biomeMapData = MapGen.GenerateBiomeMap(heightMapData, heatMapData, humidityMapData, settings.biomeSettings);
+            int size = SubChunk.CHUNK_SIZE;
+            chunk.bufferData = new ChunkBufferData[4];
+
+            float[,] heightMapData = MapGen.GenerateHeightMap(size, chunkPosition, settings.heightMapSettings, ref chunk);
+            float[,] heatMapData = MapGen.GenerateHeatMap(size, chunkPosition, settings.heatMapSettings, ref chunk);
+            float[,] humidityMapData = MapGen.GenerateHumidityMap(size, chunkPosition, settings.humiditySettings, ref chunk);
+            int[,] biomeMapData = MapGen.GenerateBiomeMap(size, heightMapData, heatMapData, humidityMapData, settings.biomeSettings, ref chunk);
 
             chunk.SetMapData(heightMapData, heatMapData, humidityMapData, biomeMapData);
 
