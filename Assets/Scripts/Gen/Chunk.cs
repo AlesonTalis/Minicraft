@@ -63,7 +63,7 @@ namespace Assets.Scripts.Gen
                         else if (l.y == 0) border = 2;
                         else border = 3;
 
-                        var p = l.x == 0 || l.x == SubChunk.CHUNK_SIZE ? l.y : l.x;
+                        var p = l.x == 0 || l.x == SubChunk.CHUNK_SIZE - 1 ? l.y : l.x;
 
                         var borderHeight = Mathf.FloorToInt(chunkData.bufferData[border].heightMapData[p] * (SubChunk.CHUNK_SIZE * CHUNK_SUBCHUNKS_STACK_HEIGHT));
                         var borderHeightLimit = i * SubChunk.CHUNK_SIZE;
