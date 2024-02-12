@@ -9,6 +9,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UnityEditor;
 using UnityEngine;
 
 namespace Assets.Scripts.CE
@@ -24,11 +25,13 @@ namespace Assets.Scripts.CE
                 globalSeed = seed,
             };
 
-            setings.heightMapSettings = GenerateMapSettings(rnd.Next(), globalScale * 250f, 3,5, 0.65f, 5f, 1.5f, 0.9f);
+            setings.heightMapSettings = GenerateMapSettings(rnd.Next(), globalScale * 250f, 3,5, 0.65f, 5f, 1.2f, 0.9f);
             setings.heatMapSettings = GenerateMapSettings(rnd.Next(), globalScale * 300f);
             setings.humiditySettings = GenerateMapSettings(rnd.Next(), globalScale * 200f);
             setings.biomeSettings = biomeSettings;
             setings.itemSettings = itemSettings;
+
+            //GUIUtility.systemCopyBuffer = JsonConvert.SerializeObject(setings);// debug
 
             return setings;
         }

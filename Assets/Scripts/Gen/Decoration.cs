@@ -19,7 +19,7 @@ namespace Assets.Scripts.Gen
             public ushort block;
         }
 
-        public static void CreateDecoration(this ChunkData chunk)
+        public static void FillBiomeBlocks(this ChunkData chunk)
         {
             // comeca com tudo sendo stone. substitui a camada superior pelo bloco do bioma. grass e dirt por padrao, ou o configurado em BiomeSetting dictionary (se nao existe a configuracao)
             List<ChangeBlocks> blocks = new List<ChangeBlocks>();

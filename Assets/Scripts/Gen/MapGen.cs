@@ -120,9 +120,14 @@ namespace Assets.Scripts.Gen
 
                 value = actionPerPoint(value);
 
-                value = Mathf.Clamp01((value + 1f) * 0.5f);
+                value = Mathf.Pow(value, settings.power);
 
-                return Mathf.Pow(value, settings.power);
+                //value = Mathf.Clamp01((value + 1f) * 0.5f);
+
+                //if (value < 0)
+                //    throw new Exception($"VALUE<0={value} - {offset}");
+
+                return value;
             });
 
 

@@ -20,7 +20,11 @@ namespace Assets.Scripts.Concurents
         public static void FillDictionary(this List<BiomeSetting> biomeSetting)
         {
             biomes.Clear();
-            biomeSetting.ForEach(f => biomes.TryAdd(f.Id, f));
+
+            for (int i = 0; i < biomeSetting.Count; i++)
+            {
+                biomes.TryAdd(i, biomeSetting[i]);
+            }
         }
     }
 }

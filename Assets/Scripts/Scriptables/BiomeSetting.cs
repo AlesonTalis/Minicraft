@@ -13,7 +13,7 @@ namespace Assets.Scripts.Scriptables
         public string? FileName { get; set; }
 
         [SerializeField]
-//        [HideInInspector]
+        //        [HideInInspector]
         private int id;
         public int Id
         {
@@ -100,9 +100,9 @@ namespace Assets.Scripts.Scriptables
         {
             get
             {
-                return new () { 
-                    x = biomeHeightRange.x, 
-                    y = biomeHeightRange.y 
+                return new() {
+                    x = biomeHeightRange.x,
+                    y = biomeHeightRange.y
                 };
             }
             set
@@ -161,11 +161,24 @@ namespace Assets.Scripts.Scriptables
             }
         }
 
-        public Dictionary<ushort, int[]> SurfaceFiller { get; set; } = new Dictionary<ushort, int[]>()
-        {
-            { 4, new [] {1 } },
-            { 5, new [] {4,6 } }
-        };
+        /// <summary>
+        /// <blockid,(range)>
+        /// </summary>
+        public Dictionary<ushort, int[]> SurfaceFiller { get; set; }// = new Dictionary<ushort, int[]>()// constructor only
+        //{
+        //    { 4, new [] {1 } },
+        //    { 5, new [] {4,6 } }
+        //};
+
+        /// <summary>
+        /// <blockid,(chance to fill with that block)>
+        /// </summary>
+        public Dictionary<ushort, int> UnderSurfaceFiller { get; set; }// = new Dictionary<ushort, int>()
+        //{
+        //    { 2, 100 },
+        //};
+        
+        // TODO: boulders, ores, decorations (geodes,pool,fossil,etc...)
 
 
         public void ApplyId()

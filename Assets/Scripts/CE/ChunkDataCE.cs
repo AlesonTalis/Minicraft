@@ -39,7 +39,7 @@ namespace Assets.Scripts.CE
 
             chunk.SetChunkDataHeightMap();
 
-            chunk.CreateDecoration();
+            chunk.FillBiomeBlocks();
 
             if (debug) chunk.debugData = JsonConvert.SerializeObject(chunk);
             
