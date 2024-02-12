@@ -324,24 +324,32 @@ namespace Assets.Scripts.Utils
             return faces;
         }
 
-        public static int GetNeighbors(this ushort[,,] array, int x, int y, int z)
+        public static int GetNeighbors(this SubChunkData subchunk, int x, int y, int z)
         {
             int faces = 63;
-            
+            ushort[,,] array = subchunk.BlockArray;
+            var buffer = subchunk.BlockArrayBuffer;
+
             int O = 0;
 
             int X = array.GetLength(0) - 1;
             int Y = array.GetLength(1) - 1;
             int Z = array.GetLength(2) - 1;
 
+            if (y == Y && NotDifferents(buffer[1][x, z], array[x, y, z])) faces -= 1;
             if (y < Y && NotDifferents(array[x, y + 1, z], array[x, y, z])) faces -= 1;
             if (y > O && NotDifferents(array[x, y - 1, z], array[x, y, z])) faces -= 2;
+            if (y == 0 && NotDifferents(buffer[0][x, z], array[x, y, z])) faces -= 2;
 
+            if (x == X && NotDifferents(buffer[3][y, z], array[x, y, z])) faces -= 4;
             if (x < X && NotDifferents(array[x + 1, y, z], array[x, y, z])) faces -= 4;
             if (x > O && NotDifferents(array[x - 1, y, z], array[x, y, z])) faces -= 8;
+            if (x == 0 && NotDifferents(buffer[2][y, z], array[x, y, z])) faces -= 8;
 
+            if (z == Z && NotDifferents(buffer[5][z, y], array[x, y, z])) faces -= 16;
             if (z < Z && NotDifferents(array[x, y, z + 1], array[x, y, z])) faces -= 16;
             if (z > O && NotDifferents(array[x, y, z - 1], array[x, y, z])) faces -= 32;
+            if (z == 0 && NotDifferents(buffer[4][z, y], array[x, y, z])) faces -= 32;
 
             return faces;
         }

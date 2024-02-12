@@ -7,5 +7,7 @@ namespace Assets.Scripts.Model
         public int SubchunkId;
         
         public ushort[,,] BlockArray { get; set; }
+
+        public ushort[][,] BlockArrayBuffer { get; set; }
     }
 }

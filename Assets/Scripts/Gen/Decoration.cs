@@ -80,7 +80,7 @@ namespace Assets.Scripts.Gen
         {
             for (int i = subchunks.Length - 1; i >= 0; i--)
             {
-                for (int blockHeight = SubChunk.CHUNK_SIZE+1; blockHeight >= 0; blockHeight--)
+                for (int blockHeight = SubChunk.CHUNK_SIZE-1; blockHeight >= 0; blockHeight--)
                 {
                     if (subchunks[i].BlockArray[x,blockHeight,z] != Chunk.AIR_BLOCK)
                     {

@@ -33,7 +33,6 @@ namespace Assets.Scripts.CE
 
             chunk.SetMapData(heightMapData, heatMapData, humidityMapData, biomeMapData);
 
-            
             chunk.chunkUID = Guid.NewGuid().ToString();
             chunk.SetPosition(chunkPosition);
 

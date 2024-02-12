@@ -26,15 +26,32 @@ namespace Assets.Scripts.Gen
         /// <returns></returns>
         public static SubChunkData SetFilledSubChunk(ushort blockId, bool stripes = false)
         {
-            int size = CHUNK_SIZE + 2;
+            int size = CHUNK_SIZE;// + 2;
             var chunkArray = new ushort[size, size, size];
+            
+            var bufferChunkArray = new ushort[][,]
+            {
+                new ushort[CHUNK_SIZE,CHUNK_SIZE],// right
+                new ushort[CHUNK_SIZE,CHUNK_SIZE],// left
+                new ushort[CHUNK_SIZE,CHUNK_SIZE],// forward
+                new ushort[CHUNK_SIZE,CHUNK_SIZE],// backward
+                new ushort[CHUNK_SIZE,CHUNK_SIZE],// top
+                new ushort[CHUNK_SIZE,CHUNK_SIZE],// bottom,
+            };
 
             chunkArray.Loop((l) =>
             {
                 chunkArray[l.x, l.y, l.z] = blockId;
-
                 return null;
             }, "GENERATE SUBCHUNK");
+
+            for (var i = 0; i < bufferChunkArray.Length; i++)
+            {
+                bufferChunkArray[i].Loop((l) =>
+                {
+                    return blockId;
+                });
+            }
 
             if (stripes)
             {
@@ -44,6 +61,7 @@ namespace Assets.Scripts.Gen
             SubChunkData subChunkData = new SubChunkData()
             {
                 BlockArray = chunkArray,
+                BlockArrayBuffer = bufferChunkArray,
             };
 
             return subChunkData;
@@ -71,14 +89,14 @@ namespace Assets.Scripts.Gen
             {
                 ushort blockid = subChunkData.BlockArray[l.x,l.y,l.z];
 
-                var vizinhos = subChunkData.BlockArray.GetNeighbors(l.x, l.y, l.z);
+                var vizinhos = subChunkData.GetNeighbors(l.x, l.y, l.z);
 
                 var cube = Cube.GenerateCube(vizinhos, blockid);
 
-                subChunkData.Add(cube, l.x - 1, l.y - 1, l.z - 1);// pode ser vazio
+                subChunkData.Add(cube, l.x, l.y, l.z);// pode ser vazio
 
                 return null;
-            }, "ConvertToVerticeData", new LoopSettings { ignoreBorders = true });
+            }, "ConvertToVerticeData", new LoopSettings { ignoreBorders = false });
 
             return subChunkData;
         }

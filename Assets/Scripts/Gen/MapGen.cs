@@ -78,6 +78,7 @@ namespace Assets.Scripts.Gen
             var height = size;
 
             var biomeMap = new int[width, height];
+            var biomeMapFinal = new int[width - 2, height - 2];
             var buffer = chunk.bufferData;
 
             for (int i = 0; i < 4; i++)
@@ -130,14 +131,16 @@ namespace Assets.Scripts.Gen
                     biome = biomes.GetBiomeInRange(height, heat, humidity);
 
                     value = biome.index;
+
+                    biomeMapFinal[l.x - 1, l.y - 1] = value;
                 }
 
-                return value;
+                return null;
             });
 
             chunk.bufferData = buffer;
 
-            return biomeMap;
+            return biomeMapFinal;
         }
 
         static float[,] Generate2dFloat(int size, Vector2 offset, MapSettings settings, Func<float, float> actionPerPoint, out float[][] borders)
@@ -213,6 +216,8 @@ namespace Assets.Scripts.Gen
             });
 
             borders = bord;
+
+            //Debug.Log($"MAP:{map.GetLength(0)},FINAL:{mapFinal.GetLength(0)}");
 
             return mapFinal;
         }
