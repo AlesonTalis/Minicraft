@@ -49,10 +49,15 @@ namespace Assets.Scripts.CE
         public static void SetBlock(this ChunkData chunk, int x, int y, int z, ushort blockId)
         {
             int subChunkId = y / SubChunk.CHUNK_SIZE;
-            int subChunkY = y % SubChunk.CHUNK_SIZE;
+            int subChunkY = y % SubChunk.CHUNK_SIZE + 1;// skip primeira linha?
 
             try
             {
+                if (subChunkY == SubChunk.CHUNK_SIZE)// borda superior
+                    chunk.subChunks[subChunkId].BlockArray[x, subChunkY + 1, z] = blockId;
+                if (subChunkY == 1)// borda inferior
+                    chunk.subChunks[subChunkId].BlockArray[x, subChunkY - 1, z] = blockId;
+
                 chunk.subChunks[subChunkId].BlockArray[x, subChunkY, z] = blockId;
             }
             catch
