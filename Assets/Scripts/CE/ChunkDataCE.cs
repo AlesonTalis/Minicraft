@@ -53,10 +53,11 @@ namespace Assets.Scripts.CE
 
             try
             {
-                if (subChunkY == SubChunk.CHUNK_SIZE)// borda superior
-                    chunk.subChunks[subChunkId].BlockArray[x, subChunkY + 1, z] = blockId;
-                if (subChunkY == 1)// borda inferior
-                    chunk.subChunks[subChunkId].BlockArray[x, subChunkY - 1, z] = blockId;
+                // TODO: observar a utilidade desta funcao
+                if (subChunkY == SubChunk.CHUNK_SIZE && subChunkId < Chunk.CHUNK_SUBCHUNKS_STACK_HEIGHT)// borda superior
+                    chunk.subChunks[subChunkId+1].BlockArray[x, 0, z] = blockId;
+                if (subChunkY == 1 && subChunkId > 1)// borda inferior
+                    chunk.subChunks[subChunkId-1].BlockArray[x, subChunkY + 1, z] = blockId;
 
                 chunk.subChunks[subChunkId].BlockArray[x, subChunkY, z] = blockId;
             }
