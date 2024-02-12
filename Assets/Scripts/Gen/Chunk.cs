@@ -48,6 +48,31 @@ namespace Assets.Scripts.Gen
                     ushort biomeBlock = (ushort)(chunkData.biomeMapData[l.x,l.y] % BiomeSettingsDictionary.biomes.Count);// stone
 
                     chunkData.subChunks[i].FillColumn(l.x, l.y, chunkHieght, AIR_BLOCK, biomeBlock);// biome block rule
+
+                    chunkData.subChunks[i].BlockArrayBuffer[0][l.x,l.y] = 
+                            height > (i * SubChunk.CHUNK_SIZE) - 1 ? biomeBlock : AIR_BLOCK;
+                    chunkData.subChunks[i].BlockArrayBuffer[1][l.x,l.y] = 
+                            height > (i * SubChunk.CHUNK_SIZE) + 1 + SubChunk.CHUNK_SIZE ? biomeBlock : AIR_BLOCK;
+                    // bordas:
+                    if (l.border)
+                    {
+                        int border;
+
+                        if (l.x == 0) border = 0;
+                        else if (l.x == SubChunk.CHUNK_SIZE - 1) border = 1;
+                        else if (l.y == 0) border = 2;
+                        else border = 3;
+
+                        var p = l.x == 0 || l.x == SubChunk.CHUNK_SIZE ? l.y : l.x;
+
+                        var borderHeight = Mathf.FloorToInt(chunkData.bufferData[border].heightMapData[p] * (SubChunk.CHUNK_SIZE * CHUNK_SUBCHUNKS_STACK_HEIGHT));
+                        var borderHeightLimit = i * SubChunk.CHUNK_SIZE;
+
+                        for (int h = 0; h < SubChunk.CHUNK_SIZE; h++)
+                        {
+                            chunkData.subChunks[i].BlockArrayBuffer[border + 2][p, h] = (ushort)(borderHeightLimit + h > borderHeight ? AIR_BLOCK : borderHeight);
+                        }
+                    }
                 }
 
                 return null;

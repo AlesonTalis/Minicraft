@@ -341,15 +341,15 @@ namespace Assets.Scripts.Utils
             if (y > O && NotDifferents(array[x, y - 1, z], array[x, y, z])) faces -= 2;
             if (y == 0 && NotDifferents(buffer[0][x, z], array[x, y, z])) faces -= 2;
 
-            if (x == X && NotDifferents(buffer[3][y, z], array[x, y, z])) faces -= 4;
+            if (x == X && NotDifferents(buffer[3][z, y], array[x, y, z])) faces -= 4;
             if (x < X && NotDifferents(array[x + 1, y, z], array[x, y, z])) faces -= 4;
             if (x > O && NotDifferents(array[x - 1, y, z], array[x, y, z])) faces -= 8;
-            if (x == 0 && NotDifferents(buffer[2][y, z], array[x, y, z])) faces -= 8;
+            if (x == 0 && NotDifferents(buffer[2][z, y], array[x, y, z])) faces -= 8;
 
-            if (z == Z && NotDifferents(buffer[5][z, y], array[x, y, z])) faces -= 16;
+            if (z == Z && NotDifferents(buffer[5][x, y], array[x, y, z])) faces -= 16;
             if (z < Z && NotDifferents(array[x, y, z + 1], array[x, y, z])) faces -= 16;
             if (z > O && NotDifferents(array[x, y, z - 1], array[x, y, z])) faces -= 32;
-            if (z == 0 && NotDifferents(buffer[4][z, y], array[x, y, z])) faces -= 32;
+            if (z == 0 && NotDifferents(buffer[4][x, y], array[x, y, z])) faces -= 32;
 
             return faces;
         }
