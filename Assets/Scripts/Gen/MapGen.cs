@@ -1,4 +1,5 @@
-﻿using Assets.Scripts.Scriptables;
+﻿using Assets.Scripts.Concurents;
+using Assets.Scripts.Scriptables;
 using Assets.Scripts.Utils;
 using System;
 using UnityEngine;
@@ -9,7 +10,7 @@ namespace Assets.Scripts.Gen
     {
         const float SMALL_NUMBER = 0.001f;
         const int LARGE_NUMBER = 100000;
-        const float HOLE_PREVENTER_MULTIPLIER = 0.75f;
+        const float HOLE_PREVENTER_MULTIPLIER = 0.85f;
         const float HOLE_PREVENTER_MIN_VALUE = 0.15f;
 
         public static SeedValues GenerateSeeds(int globalSeed)
@@ -26,11 +27,8 @@ namespace Assets.Scripts.Gen
 
         public static float[,] GenerateHeightMap(int size, Vector2 offset, MapSettings settings)
         {
-            var heightMap = Generate2dFloat(size, offset, settings, (value) =>
+            var heightMap = Generate2dFloat(size, offset, settings, (value, _) =>
             {
-                value *= value * HOLE_PREVENTER_MULTIPLIER;
-                value += HOLE_PREVENTER_MIN_VALUE;
-
                 return value;
             });
 
@@ -39,7 +37,7 @@ namespace Assets.Scripts.Gen
 
         public static float[,] GenerateHeatMap(int size, Vector2 offset, MapSettings settings)
         {
-            var heightMap = Generate2dFloat(size, offset, settings, (value) =>
+            var heightMap = Generate2dFloat(size, offset, settings, (value, _) =>
             {
                 return value;
             });
@@ -49,7 +47,7 @@ namespace Assets.Scripts.Gen
         
         public static float[,] GenerateHumidityMap(int size, Vector2 offset, MapSettings settings)
         {
-            var heightMap = Generate2dFloat(size, offset, settings, (value) =>
+            var heightMap = Generate2dFloat(size, offset, settings, (value, _) =>
             {
                 return value;
             });
@@ -57,7 +55,33 @@ namespace Assets.Scripts.Gen
             return heightMap;
         }
 
-        public static int[,] GenerateBiomeMap(float[,] heightMap, float[,] heatMap, float[,] humidityMap, BiomeSetting[] biomes)
+        public static float[,] GenerateDetailsMap(float[,] heightMap, int[,] biomeMap, Vector2Int offset, MapSettings settings)
+        {
+            var size = heightMap.GetLength(0);
+            BiomeSetting biome = null;
+
+            var detailsMap = Generate2dFloat(size, offset, settings, (value, loop) =>
+            {
+                int x = loop.x, y = loop.y;
+
+                var heightValue = heightMap[x, y];
+                var biomeId = biomeMap[x, y];
+
+                if (biome is null || biome.index != biomeId)
+                {
+                    biome = ConcurrentBiomeSettings.biomesDict[biomeId];
+                }
+
+                value = heightValue * value * biome.Intensity;
+
+
+                return value;
+            });
+
+            return detailsMap;
+        }
+
+        public static int[,] GenerateBiomeMap(float[,] heightMap, float[,] heatMap, float[,] humidityMap)
         {
             var width = heightMap.GetLength(0);
             var height = heightMap.GetLength(1);
@@ -73,7 +97,7 @@ namespace Assets.Scripts.Gen
                 var heat = heatMap[x, y];
                 var humidity = humidityMap[x, y];
 
-                var biome = biomes.GetBiomeInRange(height, heat, humidity);
+                var biome = ConcurrentBiomeSettings.biomesList.GetBiomeInRange(height, heat, humidity);
 
                 // index para debug
                 value = biome.index;// biome.Id;
@@ -84,7 +108,7 @@ namespace Assets.Scripts.Gen
             return biomeMap;
         }
 
-        static float[,] Generate2dFloat(int size, Vector2 offset, MapSettings settings, Func<float, float> actionPerPoint)
+        static float[,] Generate2dFloat(int size, Vector2 offset, MapSettings settings, Func<float, Loop, float> actionPerPoint)
         {
             float[,] map = new float[size, size];
 
@@ -98,7 +122,7 @@ namespace Assets.Scripts.Gen
                 int x = rand.Next(-LARGE_NUMBER, LARGE_NUMBER);
                 int y = rand.Next(-LARGE_NUMBER, LARGE_NUMBER);
 
-                octavesOffset[i] = new Vector2(x, y);
+                octavesOffset[i] = new Vector2(x, y) + offset;
             }
 
             map.Loop((l) => {
@@ -108,7 +132,7 @@ namespace Assets.Scripts.Gen
 
                 for (int o = 0; o < octavesOffset.Length; o++)
                 {
-                    (float x, float y) = GetPosition(offset + octavesOffset[o], l.x, l.y, settings, frequency);
+                    (float x, float y) = GetPosition(octavesOffset[o], l.x, l.y, settings, frequency);
 
                     value += noise.GetSimplex(x, y) * amplitude;
 
@@ -118,14 +142,17 @@ namespace Assets.Scripts.Gen
 
                 value *= settings.intensity;
 
-                value = actionPerPoint(value);
+                value *= value * HOLE_PREVENTER_MULTIPLIER;
+                value += HOLE_PREVENTER_MIN_VALUE;
+
+                //if (value > 2f || value < -2f)
+                //{
+                //    throw new Exception($"VALUE TOO SMALL|LARGE - {value} - {offset}");
+                //}
+
+                value = actionPerPoint(value, l);
 
                 value = Mathf.Pow(value, settings.power);
-
-                //value = Mathf.Clamp01((value + 1f) * 0.5f);
-
-                //if (value < 0)
-                //    throw new Exception($"VALUE<0={value} - {offset}");
 
                 return value;
             });

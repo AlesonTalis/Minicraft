@@ -177,8 +177,10 @@ namespace Assets.Scripts.Scriptables
         //{
         //    { 2, 100 },
         //};
-        
+
         // TODO: boulders, ores, decorations (geodes,pool,fossil,etc...)
+
+        public float Intensity { get; set; } = 2.75f;
 
 
         public void ApplyId()

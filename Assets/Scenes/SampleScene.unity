@@ -320,11 +320,12 @@ MonoBehaviour:
   m_ThreadAmount: 20
   m_ChunkAmountTeste: 8
   m_ThreadSleepMiliseconds: 10
-  m_GlobalScale: 5
+  m_GlobalScale: 1
   m_TerrainMaterial: {fileID: 2100000, guid: 76f6c09546d8c5e47b5780dec9f0153c, type: 2}
   m_BiomesSettings: {fileID: 4900000, guid: f071ac021aa881d439ed4d9fcd05f1b3, type: 3}
   m_BlockPallet: {fileID: 4900000, guid: 4995b0ce55ad9bd4cacde358f62ddd86, type: 3}
   seed: 26041996
+  debug: 0
 --- !u!4 &267982473
 Transform:
   m_ObjectHideFlags: 0

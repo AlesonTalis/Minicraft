@@ -29,7 +29,7 @@ namespace Assets.Scripts.Gen
                 int biomeId = chunk.biomeMapData[blk.x, blk.z];
                 int crtHeight = blk.h;
                 
-                if (BiomeSettingsDictionary.biomes.TryGetValue(biomeId, out var biome) is false) return;
+                if (ConcurrentBiomeSettings.biomesDict.TryGetValue(biomeId, out var biome) is false) return;
 
                 System.Random rnd = new (chunk.chunkSeed);
 

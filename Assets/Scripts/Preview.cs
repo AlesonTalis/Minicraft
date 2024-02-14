@@ -233,7 +233,7 @@ namespace Assets.Scripts
             var heatMap = MapGen.GenerateHeatMap(mapPreviewSize, mapPreviewOffset, heatMapSettings.ApplySeed(seeds.heatMapSeed));
             var humidity = MapGen.GenerateHumidityMap(mapPreviewSize, mapPreviewOffset, humidityMapSettings.ApplySeed(seeds.humiditySeed));
 
-            var biomeMap = MapGen.GenerateBiomeMap(heightMap, heatMap, humidity, biomes);
+            var biomeMap = MapGen.GenerateBiomeMap(heightMap, heatMap, humidity);
 
             var texture = MapPreview.GenerateTextureFromBiomeMap(biomeMap, biomes.GetColorDictionary());
 

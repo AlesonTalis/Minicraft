@@ -39,17 +39,17 @@ namespace Assets.Scripts.Gen
         public static void SetChunkDataHeightMap(this ChunkData chunkData, float[,] heightMap = default)
         {
             chunkData.subChunks = SetFilledChunk(1);
-            BiomeSetting oldBiome = null;
+            BiomeSetting biomeSelected = null;
             ushort biomeBlock = 2;
 
             chunkData.heightMapData.Loop((l) =>
             {
-                int height = (int)Mathf.Floor((chunkData.heightMapData[l.x, l.y]) * (SubChunk.CHUNK_SIZE * CHUNK_SUBCHUNKS_STACK_HEIGHT));
+                int height = (int)Mathf.Floor((chunkData.detailsMapData[l.x, l.y]) * (SubChunk.CHUNK_SIZE * (CHUNK_SUBCHUNKS_STACK_HEIGHT / 2))) + (SubChunk.CHUNK_SIZE * 2);
                 var biomeId = chunkData.biomeMapData[l.x, l.y];
 
-                if (oldBiome is not null && oldBiome.index != biomeId && BiomeSettingsDictionary.biomes.TryGetValue(biomeId, out oldBiome) is not false)
+                if (biomeSelected is not null && biomeSelected.index != biomeId && ConcurrentBiomeSettings.biomesDict.TryGetValue(biomeId, out biomeSelected) is not false)
                 {
-                    biomeBlock = oldBiome.UnderSurfaceFiller.ToList()[0].Key;
+                    biomeBlock = biomeSelected.UnderSurfaceFiller.ToList()[0].Key;
                 }
 
                 for (int i = 0; i < CHUNK_SUBCHUNKS_STACK_HEIGHT; i++)

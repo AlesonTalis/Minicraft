@@ -27,7 +27,8 @@ namespace Assets.Scripts.CE
 
             setings.heightMapSettings = GenerateMapSettings(rnd.Next(), globalScale * 250f, 3,5, 0.65f, 5f, 1.2f, 0.9f);
             setings.heatMapSettings = GenerateMapSettings(rnd.Next(), globalScale * 300f);
-            setings.humiditySettings = GenerateMapSettings(rnd.Next(), globalScale * 200f);
+            setings.humidityMapSettings = GenerateMapSettings(rnd.Next(), globalScale * 200f);
+            setings.detailsMapSettings = GenerateMapSettings(rnd.Next(), globalScale * 100f, 4,6, 0.85f, 2.5f);
             setings.biomeSettings = biomeSettings;
             setings.itemSettings = itemSettings;
 
@@ -49,7 +50,7 @@ namespace Assets.Scripts.CE
             return new MapSettings
             {
                 seed = rnd.Next(),
-                scale = ((float)rnd.NextDouble() * scale) + (scale * 0.333f),
+                scale = scale,//((float)rnd.NextDouble() * scale) + (scale * 0.333f),
                 octaves = rnd.Next(octavesMin, octavesMax),
                 persistance = (float)(rnd.NextDouble() * persistance) + (persistance * 0.333f),
                 lacunarity = (float)(rnd.NextDouble() * lacunarity) + 1f,

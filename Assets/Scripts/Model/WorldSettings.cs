@@ -14,7 +14,8 @@ namespace Assets.Scripts.Model
 
         public MapSettings heightMapSettings;
         public MapSettings heatMapSettings;
-        public MapSettings humiditySettings;
+        public MapSettings humidityMapSettings;
+        public MapSettings detailsMapSettings;
         public BiomeSetting[] biomeSettings;
         public ItemSettings[] itemSettings;
     }

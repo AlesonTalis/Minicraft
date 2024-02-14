@@ -17,9 +17,9 @@ namespace Assets.Scripts.Utils
 
         #region Custom Extensions
 
-        public static BiomeSetting GetBiomeInRange(this BiomeSetting[] biomes, float height, float heat, float humidity)
+        public static BiomeSetting GetBiomeInRange(this List<BiomeSetting> biomes, float height, float heat, float humidity)
         {
-            for (int i = biomes.Length - 1; i >= 0; i--)
+            for (int i = biomes.Count - 1; i >= 0; i--)
             {
                 bool checkHeight = height >= biomes[i].BiomeHeightRange.x && height <= biomes[i].BiomeHeightRange.y;
                 bool checkTemperature = heat >= biomes[i].BiomeTemperatureRange.x && heat <= biomes[i].BiomeTemperatureRange.y;

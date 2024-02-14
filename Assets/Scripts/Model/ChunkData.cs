@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UnityEngine;
 
 namespace Assets.Scripts.Model
 {
@@ -25,5 +26,10 @@ namespace Assets.Scripts.Model
         public string debugData;
 
         public int chunkSeed { get; set; }
+
+        public int generateSize { get; set; }
+        public int finalSize { get; set; }
+        public Vector2Int worldOffset { get; set; }
+        public WorldSettings worldSettings { get; set; }
     }
 }

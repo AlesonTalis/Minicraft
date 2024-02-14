@@ -23,20 +23,14 @@ namespace Assets.Scripts.CE
 
         public static void GenerateChunkData(this ChunkData chunk, Vector2Int chunkPosition, WorldSettings settings, bool debug = false)
         {
-            int size = SubChunk.CHUNK_SIZE + 2;
-            float[,] heightMapData = MapGen.GenerateHeightMap(size, chunkPosition, settings.heightMapSettings);
-            float[,] heatMapData = MapGen.GenerateHeatMap(size, chunkPosition, settings.heatMapSettings);
-            float[,] humidityMapData = MapGen.GenerateHumidityMap(size, chunkPosition, settings.humiditySettings);
-            int[,] biomeMapData = MapGen.GenerateBiomeMap(heightMapData, heatMapData, humidityMapData, settings.biomeSettings);
-
-            chunk.SetMapData(heightMapData, heatMapData, humidityMapData, biomeMapData);
-
+            chunk.SetChunkSettings(chunkPosition, settings);
             
-            chunk.chunkUID = Guid.NewGuid().ToString();
-            chunk.SetPosition(chunkPosition);
-
-            chunk.chunkSeed = ($"{chunkPosition.x}_{chunkPosition.y}_{settings.globalSeed}_{size}").GetHashCode();
-
+            chunk.GenerateHeightMap();
+            chunk.GenerateHeatMap();
+            chunk.GenerateHumidityMap();
+            chunk.GenerateBiomeMap();
+            chunk.GenerateDetailsMap();
+            
             chunk.SetChunkDataHeightMap();
 
             chunk.FillBiomeBlocks();
@@ -65,6 +59,44 @@ namespace Assets.Scripts.CE
             {
                 Debug.Log($"{x}|{y}|{z}|{subChunkId}|{subChunkY}");
             }
+        }
+
+        static void SetChunkSettings(this ChunkData chunk, Vector2Int offset, WorldSettings settings)
+        {
+            chunk.generateSize = SubChunk.CHUNK_SIZE + 2;
+            chunk.finalSize = SubChunk.CHUNK_SIZE;
+            chunk.worldOffset = offset;
+            chunk.worldSettings = settings;
+
+            chunk.chunkUID = Guid.NewGuid().ToString();
+            chunk.SetPosition(offset);
+
+            chunk.chunkSeed = ($"{offset.x}_{offset.y}_{settings.globalSeed}").GetHashCode();
+        }
+
+        static void GenerateHeightMap(this ChunkData chunk)
+        {
+            chunk.heightMapData = MapGen.GenerateHeightMap(chunk.generateSize, chunk.worldOffset, chunk.worldSettings.heightMapSettings);
+        }
+
+        static void GenerateHeatMap(this ChunkData chunk)
+        {
+            chunk.heatMapData = MapGen.GenerateHeatMap(chunk.generateSize, chunk.worldOffset, chunk.worldSettings.heatMapSettings);
+        }
+
+        static void GenerateHumidityMap(this ChunkData chunk)
+        {
+            chunk.humidityMapData = MapGen.GenerateHumidityMap(chunk.generateSize, chunk.worldOffset, chunk.worldSettings.humidityMapSettings);
+        }
+
+        static void GenerateBiomeMap(this ChunkData chunk)
+        {
+            chunk.biomeMapData = MapGen.GenerateBiomeMap(chunk.heightMapData, chunk.heatMapData, chunk.humidityMapData);
+        }
+
+        static void GenerateDetailsMap(this ChunkData chunk)
+        {
+            chunk.detailsMapData = MapGen.GenerateDetailsMap(chunk.heightMapData, chunk.biomeMapData, chunk.worldOffset, chunk.worldSettings.detailsMapSettings);
         }
     }
 }
